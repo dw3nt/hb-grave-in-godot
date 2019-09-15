@@ -5,4 +5,5 @@
 [node name="Graveyard" type="Node"]
 
 [node name="Skeleton" parent="." instance=ExtResource( 1 )]
+position = Vector2( 35, 120 )
 
