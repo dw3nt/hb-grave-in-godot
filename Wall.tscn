@@ -6,7 +6,6 @@
 extents = Vector2( 16, 16 )
 
 [node name="Wall" type="StaticBody2D"]
-editor/display_folded = true
 __meta__ = {
 "_edit_group_": true
 }
