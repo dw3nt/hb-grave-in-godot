@@ -5,8 +5,9 @@ enum State { MOVE, ROLL }
 const MAX_RUN_SPEED = 200
 const ACCELERATION = 20
 
-onready var state = State.MOVE
 var motion = Vector2()
+
+onready var state = State.MOVE
 
 func _physics_process(delta):
 	if Input.is_action_just_pressed("roll"):
@@ -38,12 +39,8 @@ func process_move():
 		
 
 func process_roll():
-	var x_direction = 1
-	if $Sprite.flip_h:
-		x_direction = -1
-	
 	$Anim.play("roll")
-	motion.x = 200 * x_direction
+	motion.x = 200 * sign(motion.x)
 
 	
 func should_stop():
@@ -52,4 +49,5 @@ func should_stop():
 
 func _on_Anim_animation_finished(anim_name):
 	if anim_name == "roll":
+		motion.x = 100 * sign(motion.x)
 		state = State.MOVE
