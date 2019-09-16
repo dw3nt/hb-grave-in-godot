@@ -27,7 +27,8 @@ func _physics_process(delta):
 
 
 func process_attack():
-	pass
+	$Anim.play("attack_one")
+	motion.x = lerp(motion.x, 0, 0.25)
 	
 	
 func process_roll():
@@ -56,6 +57,9 @@ func should_stop():
 
 
 func _on_Anim_animation_finished(anim_name):
-	if anim_name == "roll":
-		motion.x = 100 * sign(motion.x)
-		state = State.MOVE
+	match anim_name:
+		"roll":
+			motion.x = 100 * sign(motion.x)
+			state = State.MOVE
+		"attack_one":
+			state = State.MOVE
