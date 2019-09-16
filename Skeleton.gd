@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-enum State { MOVE, ROLL }
+enum State { MOVE, ROLL, ATTACK_ONE }
 
 const MAX_RUN_SPEED = 200
 const ACCELERATION = 20
@@ -12,14 +12,27 @@ onready var state = State.MOVE
 func _physics_process(delta):
 	if Input.is_action_just_pressed("roll"):
 		state = State.ROLL
+	elif Input.is_action_just_pressed("attack"):
+		state = State.ATTACK_ONE
 	
 	match state:
-		State.MOVE:
-			process_move()
 		State.ROLL:
 			process_roll()
+		State.ATTACK_ONE:
+			process_attack()
+		State.MOVE:
+			process_move()
 	
 	move_and_slide(motion)
+
+
+func process_attack():
+	pass
+	
+	
+func process_roll():
+	$Anim.play("roll")
+	motion.x = 200 * sign(motion.x)
 	
 	
 func process_move():
@@ -36,11 +49,6 @@ func process_move():
 		$Sprite.flip_h = false
 	else:
 		$Anim.play("idle")
-		
-
-func process_roll():
-	$Anim.play("roll")
-	motion.x = 200 * sign(motion.x)
 
 	
 func should_stop():
