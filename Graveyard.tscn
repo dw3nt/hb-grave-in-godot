@@ -9,11 +9,10 @@ extents = Vector2( 16, 16 )
 [node name="Graveyard" type="Node"]
 
 [node name="Walls" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="Wall" type="StaticBody2D" parent="Walls"]
 editor/display_folded = true
-position = Vector2( 16, 128 )
+position = Vector2( 16, 136 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -26,7 +25,7 @@ shape = SubResource( 1 )
 
 [node name="Wall2" type="StaticBody2D" parent="Walls"]
 editor/display_folded = true
-position = Vector2( 304, 128 )
+position = Vector2( 304, 136 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -38,5 +37,5 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Skeleton" parent="." instance=ExtResource( 2 )]
-position = Vector2( 59, 120 )
+position = Vector2( 59, 128 )
 
