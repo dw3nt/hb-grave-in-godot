@@ -10,11 +10,6 @@ var motion = Vector2()
 onready var state = State.MOVE
 
 func _physics_process(delta):
-	if Input.is_action_just_pressed("roll"):
-		state = State.ROLL
-	elif Input.is_action_just_pressed("attack"):
-		state = State.ATTACK_ONE
-	
 	match state:
 		State.ROLL:
 			process_roll()
@@ -37,6 +32,11 @@ func process_roll():
 	
 	
 func process_move():
+	if Input.is_action_just_pressed("roll"):
+		state = State.ROLL
+	elif Input.is_action_just_pressed("attack"):
+		state = State.ATTACK_ONE
+	
 	if should_stop():
 		motion.x = lerp(motion.x, 0, 0.25)
 		$Anim.play("idle")
