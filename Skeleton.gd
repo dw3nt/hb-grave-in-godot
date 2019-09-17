@@ -1,9 +1,12 @@
 extends KinematicBody2D
 
-enum State { MOVE, ROLL, ATTACK_ONE }
+enum State { MOVE, ROLL, ATTACK_ONE, ATTACK_TWO }
 
 const MAX_RUN_SPEED = 200
 const ACCELERATION = 20
+const LAST_ATTACK_STATE = State.ATTACK_TWO
+
+export(bool) var allow_combo = false
 
 var motion = Vector2()
 
@@ -14,16 +17,21 @@ func _physics_process(delta):
 		State.ROLL:
 			process_roll()
 		State.ATTACK_ONE:
-			process_attack()
+			process_attack("attack_one")
+		State.ATTACK_TWO:
+			process_attack("attack_two")
 		State.MOVE:
 			process_move()
 	
 	move_and_slide(motion)
 
 
-func process_attack():
-	$Anim.play("attack_one")
+func process_attack(anim_name):
+	$Anim.play(anim_name)
 	motion.x = lerp(motion.x, 0, 0.25)
+	
+	if Input.is_action_just_pressed("attack") && allow_combo && state != LAST_ATTACK_STATE:
+		state += 1
 	
 	
 func process_roll():
@@ -65,4 +73,9 @@ func _on_Anim_animation_finished(anim_name):
 			motion.x = 100 * sign(motion.x)
 			state = State.MOVE
 		"attack_one":
-			state = State.MOVE
+			if state == State.ATTACK_ONE:
+				state = State.MOVE
+		"attack_two":
+			if state == State.ATTACK_TWO:
+				state = State.MOVE
+		
