@@ -28,7 +28,10 @@ func process_attack():
 	
 func process_roll():
 	$Anim.play("roll")
-	motion.x = 200 * sign(motion.x)
+	if $Sprite.flip_h:
+		motion.x = -200
+	else:
+		motion.x = 200
 	
 	
 func process_move():
