@@ -1,10 +1,10 @@
 extends KinematicBody2D
 
-enum State { MOVE, ROLL, ATTACK_ONE, ATTACK_TWO }
+enum State { MOVE, ROLL, ATTACK_ONE, ATTACK_TWO, ATTACK_THREE }
 
 const MAX_RUN_SPEED = 200
 const ACCELERATION = 20
-const LAST_ATTACK_STATE = State.ATTACK_TWO
+const LAST_ATTACK_STATE = State.ATTACK_THREE
 
 export(bool) var allow_combo = false
 
@@ -20,6 +20,8 @@ func _physics_process(delta):
 			process_attack("attack_one")
 		State.ATTACK_TWO:
 			process_attack("attack_two")
+		State.ATTACK_THREE:
+			process_attack("attack_three")
 		State.MOVE:
 			process_move()
 	
@@ -74,5 +76,8 @@ func _on_Anim_animation_finished(anim_name):
 				state = State.MOVE
 		"attack_two":
 			if state == State.ATTACK_TWO:
+				state = State.MOVE
+		"attack_three":
+			if state == State.ATTACK_THREE:
 				state = State.MOVE
 		
