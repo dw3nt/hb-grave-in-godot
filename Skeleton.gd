@@ -36,10 +36,7 @@ func process_attack(anim_name):
 	
 func process_roll():
 	$Anim.play("roll")
-	if $Sprite.flip_h:
-		motion.x = -200
-	else:
-		motion.x = 200
+	motion.x = 200 * $Flippable.scale.x
 	
 	
 func process_move():
@@ -54,11 +51,11 @@ func process_move():
 	elif Input.is_action_pressed("move_left"):
 		motion.x = max(motion.x - ACCELERATION, -MAX_RUN_SPEED)
 		$Anim.play("run")
-		$Sprite.flip_h = true
+		$Flippable.scale.x = -1
 	elif Input.is_action_pressed("move_right"):
 		motion.x = min(motion.x + ACCELERATION, MAX_RUN_SPEED)
 		$Anim.play("run")
-		$Sprite.flip_h = false
+		$Flippable.scale.x = 1
 	else:
 		$Anim.play("idle")
 
