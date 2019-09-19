@@ -72,7 +72,7 @@ tracks/4/keys = {
 "values": [ Vector2( 6, 0 ) ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=2]
 resource_name = "attack_three"
 length = 0.6
 tracks/0/type = "value"
@@ -124,8 +124,7 @@ tracks/3/keys = {
 "values": [ Vector2( 16, 0 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "attack_two"
+[sub_resource type="Animation" id=3]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Flippable/Sprite:texture")
@@ -188,7 +187,7 @@ tracks/4/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=4]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -240,8 +239,7 @@ tracks/3/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "roll"
+[sub_resource type="Animation" id=5]
 length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("Flippable/Sprite:texture")
@@ -292,7 +290,7 @@ tracks/3/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -344,7 +342,7 @@ tracks/3/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 10, 16 )
 
 [node name="Skeleton" type="KinematicBody2D"]
@@ -359,14 +357,14 @@ hframes = 3
 [node name="Anim" type="AnimationPlayer" parent="."]
 autoplay = "idle"
 anims/attack_one = SubResource( 1 )
-anims/attack_three = SubResource( 7 )
-anims/attack_two = SubResource( 2 )
-anims/idle = SubResource( 3 )
-anims/roll = SubResource( 4 )
-anims/run = SubResource( 5 )
+anims/attack_three = SubResource( 2 )
+anims/attack_two = SubResource( 3 )
+anims/idle = SubResource( 4 )
+anims/roll = SubResource( 5 )
+anims/run = SubResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 8 )
-shape = SubResource( 6 )
+shape = SubResource( 7 )
 
 [connection signal="animation_finished" from="Anim" to="." method="_on_Anim_animation_finished"]
