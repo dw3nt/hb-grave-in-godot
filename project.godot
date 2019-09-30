@@ -80,10 +80,11 @@ attack={
 
 [layer_names]
 
-2d_physics/layer_1="Player"
-2d_physics/layer_2="Enemies"
+2d_physics/layer_1="PlayerHurt"
+2d_physics/layer_2="EnemyHurt"
 2d_physics/layer_3="Walls"
-2d_physics/layer_4="EnemyAttacks"
+2d_physics/layer_4="PlayerHit"
+2d_physics/layer_5="EnemyHit"
 
 [rendering]
 

@@ -11,6 +11,12 @@ export(bool) var allow_combo = false
 var motion = Vector2()
 
 onready var state = State.MOVE
+onready var hitboxes = get_tree().get_nodes_in_group("playerHitbox")
+
+
+func _ready():
+	reset_hitboxes()
+
 
 func _physics_process(delta):
 	match state:
@@ -29,11 +35,16 @@ func _physics_process(delta):
 
 
 func process_attack(anim_name):
-	$Anim.play(anim_name)
+	$Anim.play(anim_name)	
 	motion.x = lerp(motion.x, 0, 0.25)
 	
 	if Input.is_action_just_pressed("attack") && allow_combo && state != LAST_ATTACK_STATE:
 		state += 1
+		
+		
+func attack_hit(node):
+	print("Skeleton hit " + node.name)
+	node.queue_free()
 	
 	
 func process_roll():
@@ -64,6 +75,21 @@ func process_move():
 	
 func should_stop():
 	return (!Input.is_action_pressed("move_left") && !Input.is_action_pressed("move_right")) || (Input.is_action_pressed("move_left") && Input.is_action_pressed("move_right"))
+	
+	
+func reset_hitboxes():
+	for node in hitboxes:
+		node.get_child(0).disabled = true
+
+
+func _on_Anim_animation_started(anim_name):
+	match anim_name:
+		"attack_one":
+			continue
+		"attack_two":
+			continue
+		"attack_three":
+			reset_hitboxes()
 
 
 func _on_Anim_animation_finished(anim_name):
@@ -80,4 +106,3 @@ func _on_Anim_animation_finished(anim_name):
 		"attack_three":
 			if state == State.ATTACK_THREE:
 				state = State.MOVE
-		
