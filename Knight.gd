@@ -13,13 +13,12 @@ var isFlipped = false
 var inAttackRange = false
 
 func _physics_process(delta):
-	# may be a better way to tell enemies player doesn't exist (or is dead) cuz this is bad practice and inefficent
+	# may be a better way to tell enemies player doesn't exist (or is dead) cuz this seems like bad practice / inefficent
 	if skeleton == null:
 		state = State.IDLE
 	
 	match state:
 		State.IDLE:
-			set_face_direction(skeleton)
 			process_idle()
 		State.CHASE:
 			set_face_direction(skeleton)
@@ -47,6 +46,11 @@ func process_chase(chase):
 func process_attack():
 	$Anim.play("attack")
 	motion.x = lerp(motion.x, 0, 0.25)
+	
+	
+func attack_hit(node):
+	print("Knight hit " + node.name)
+	node.queue_free()
 			
 
 func set_face_direction(faceTowards):
@@ -71,7 +75,10 @@ func _on_AttackDetect_body_exited(body):
 
 func _on_Anim_animation_finished(anim_name):
 	if anim_name == "attack":
-		if inAttackRange:
-			set_face_direction(skeleton)
+		if get_tree().get_root().find_node("Skeleton", true, false):
+			if inAttackRange:
+				set_face_direction(skeleton)
+			else:
+				state = State.CHASE
 		else:
-			state = State.CHASE
+			skeleton = null
