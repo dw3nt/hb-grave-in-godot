@@ -9,6 +9,7 @@ onready var state = State.CHASE
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
 
 var motion = Vector2()
+var isFlipped = false
 var inAttackRange = false
 
 func _physics_process(delta):
@@ -35,8 +36,7 @@ func process_idle():
 	
 	
 func process_chase(chase):
-	var x_scale = $Flippable.scale.x
-	if x_scale > 0:
+	if !isFlipped:
 		motion.x = min(motion.x + ACCELERATION, MAX_MOVE_SPEED)
 	else:
 		motion.x = max(motion.x - ACCELERATION, -MAX_MOVE_SPEED)
@@ -50,11 +50,12 @@ func process_attack():
 			
 
 func set_face_direction(faceTowards):
-	var x_scale = sign(faceTowards.position.x - position.x)
-	if x_scale == 0:
-		x_scale = 1
-	
-	$Flippable.scale.x = x_scale
+	if faceTowards.position.x > position.x && isFlipped:
+		isFlipped = false
+		scale.x = -1
+	elif faceTowards.position.x < position.x && !isFlipped:
+		isFlipped = true
+		scale.x = -1
 	
 
 func _on_AttackDetect_body_entered(body):
