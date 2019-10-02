@@ -48,9 +48,9 @@ func process_attack():
 	motion.x = lerp(motion.x, 0, 0.25)
 	
 	
-func attack_hit(node):
-	print("Knight hit " + node.name)
-	node.queue_free()
+func process_hit(attacker):
+	print("Knight hit by " + attacker.name)
+	queue_free()
 			
 
 func set_face_direction(faceTowards):

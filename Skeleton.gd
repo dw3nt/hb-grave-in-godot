@@ -43,9 +43,9 @@ func process_attack(anim_name):
 		state += 1
 		
 		
-func attack_hit(node):
-	print("Skeleton hit " + node.name)
-	node.queue_free()
+func process_hit(attacker):
+	print("Skeleton hit by " + attacker.name)
+	queue_free()
 	
 	
 func process_roll():
