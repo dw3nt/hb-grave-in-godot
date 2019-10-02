@@ -9,6 +9,7 @@ const LAST_ATTACK_STATE = State.ATTACK_THREE
 export(bool) var allow_combo = false
 
 var motion = Vector2()
+var isFlipped = false
 
 onready var state = State.MOVE
 onready var hitboxes = get_tree().get_nodes_in_group("playerHitbox")
@@ -49,7 +50,10 @@ func attack_hit(node):
 	
 func process_roll():
 	$Anim.play("roll")
-	motion.x = 200 * $Flippable.scale.x
+	if isFlipped:
+		motion.x = -200
+	else:
+		motion.x = 200
 	
 	
 func process_move():
@@ -64,11 +68,15 @@ func process_move():
 	elif Input.is_action_pressed("move_left"):
 		motion.x = max(motion.x - ACCELERATION, -MAX_RUN_SPEED)
 		$Anim.play("run")
-		$Flippable.scale.x = -1
+		if !isFlipped:
+			isFlipped = true
+			scale.x = -1
 	elif Input.is_action_pressed("move_right"):
 		motion.x = min(motion.x + ACCELERATION, MAX_RUN_SPEED)
 		$Anim.play("run")
-		$Flippable.scale.x = 1
+		if isFlipped:
+			isFlipped = false
+			scale.x = -1
 	else:
 		$Anim.play("idle")
 
