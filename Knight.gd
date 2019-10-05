@@ -115,4 +115,7 @@ func _on_Anim_animation_finished(anim_name):
 			else:
 				skeleton = null
 		"knockback":
-			state = State.CHASE
+			if inAttackRange:
+				state = State.ATTACK
+			else:
+				state = State.CHASE
