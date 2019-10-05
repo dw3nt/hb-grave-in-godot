@@ -38,6 +38,7 @@ func _physics_process(delta):
 			process_move()
 	
 	move_and_slide(motion)
+	set_camera_facing()
 
 
 func process_attack(anim_name):
@@ -113,6 +114,13 @@ func should_stop():
 func reset_hitboxes():
 	for node in hitboxes:
 		node.get_child(0).disabled = true
+		
+		
+func set_camera_facing():
+	if isFlipped:
+		$Camera.offset_h = -1
+	else:
+		$Camera.offset_h = 1
 		
 		
 func _on_Anim_animation_started(anim_name):

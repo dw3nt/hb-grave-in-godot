@@ -502,5 +502,14 @@ knockback = 150
 shape = SubResource( 9 )
 disabled = true
 
+[node name="Camera" type="Camera2D" parent="."]
+offset = Vector2( 0, -36 )
+current = true
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
+smoothing_enabled = true
+drag_margin_left = 0.35
+drag_margin_right = 0.35
+
 [connection signal="animation_finished" from="Anim" to="." method="_on_Anim_animation_finished"]
 [connection signal="animation_started" from="Anim" to="." method="_on_Anim_animation_started"]

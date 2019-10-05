@@ -16,7 +16,7 @@ position = Vector2( 1008, 144 )
 
 [node name="Ground" parent="Walls" instance=ExtResource( 1 )]
 position = Vector2( 496, 176 )
-scale = Vector2( 40, 1 )
+scale = Vector2( 44, 1 )
 
 [node name="Enemies" type="Node2D" parent="."]
 
