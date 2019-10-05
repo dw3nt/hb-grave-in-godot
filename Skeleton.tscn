@@ -508,8 +508,9 @@ current = true
 drag_margin_h_enabled = false
 drag_margin_v_enabled = false
 smoothing_enabled = true
-drag_margin_left = 0.35
-drag_margin_right = 0.35
+smoothing_speed = 2.5
+drag_margin_left = 0.4
+drag_margin_right = 0.4
 
 [connection signal="animation_finished" from="Anim" to="." method="_on_Anim_animation_finished"]
 [connection signal="animation_started" from="Anim" to="." method="_on_Anim_animation_started"]
