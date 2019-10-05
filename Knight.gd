@@ -1,9 +1,10 @@
 extends KinematicBody2D
 
-enum State { IDLE, CHASE, ATTACK }
+enum State { IDLE, CHASE, ATTACK, KNOCKBACK }
 
 const MAX_MOVE_SPEED = 50
 const ACCELERATION = 10
+const MAX_KNOCKBACK_SPEED = 100
 
 var motion = Vector2()
 var isFlipped = false
@@ -27,12 +28,16 @@ func _physics_process(delta):
 			process_chase(skeleton)
 		State.ATTACK:
 			process_attack()
+		State.KNOCKBACK:
+			process_knockback()
 			
 	move_and_slide(motion)
 	
 
 func process_idle():
-	$Anim.play("idle")
+	if $Anim.current_animation != "idle":
+		$Anim.play("idle")
+		
 	motion.x = lerp(motion.x, 0, 0.25)
 	
 	
@@ -42,19 +47,29 @@ func process_chase(chase):
 	else:
 		motion.x = max(motion.x - ACCELERATION, -MAX_MOVE_SPEED)
 		
-	$Anim.play("walk")
+	if $Anim.current_animation != "walk":
+		$Anim.play("walk")
 	
 	
 func process_attack():
-	$Anim.play("attack")
+	if $Anim.current_animation != "knockback":
+		$Anim.play("attack")
+		
 	motion.x = lerp(motion.x, 0, 0.25)
 	
 	
 func process_hit(attacker, damage):
 	print("Knight took " + str(damage) + " from " + attacker.name)
+	state = State.KNOCKBACK
 	hp -= damage
 	if hp <= 0:
 		queue_free()
+		
+
+func process_knockback():
+	if $Anim.current_animation != "knockback":
+		$Anim.play("knockback")
+	motion.x = lerp(motion.x, 0, 0.025)
 			
 
 func set_face_direction(faceTowards):
@@ -77,12 +92,24 @@ func _on_AttackDetect_body_exited(body):
 		inAttackRange = false
 
 
-func _on_Anim_animation_finished(anim_name):
-	if anim_name == "attack":
-		if get_tree().get_root().find_node("Skeleton", true, false):
-			if inAttackRange:
-				set_face_direction(skeleton)
+func _on_Anim_animation_started(anim_name):
+	match(anim_name):
+		"knockback":
+			if isFlipped:
+				motion.x = MAX_KNOCKBACK_SPEED
 			else:
-				state = State.CHASE
-		else:
-			skeleton = null
+				motion.x = -MAX_KNOCKBACK_SPEED
+
+
+func _on_Anim_animation_finished(anim_name):
+	match(anim_name):
+		"attack":
+			if get_tree().get_root().find_node("Skeleton", true, false):
+				if inAttackRange:
+					set_face_direction(skeleton)
+				else:
+					state = State.CHASE
+			else:
+				skeleton = null
+		"knockback":
+			state = State.CHASE
