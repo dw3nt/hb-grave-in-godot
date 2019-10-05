@@ -94,27 +94,20 @@ func reset_hitboxes():
 		node.get_child(0).disabled = true
 
 
-func _on_Anim_animation_started(anim_name):
-	match anim_name:
-		"attack_one":
-			continue
-		"attack_two":
-			continue
-		"attack_three":
-			reset_hitboxes()
-
-
 func _on_Anim_animation_finished(anim_name):
 	match anim_name:
 		"roll":
 			motion.x = 100 * sign(motion.x)
 			state = State.MOVE
 		"attack_one":
+			reset_hitboxes()
 			if state == State.ATTACK_ONE:
 				state = State.MOVE
 		"attack_two":
+			reset_hitboxes()
 			if state == State.ATTACK_TWO:
 				state = State.MOVE
 		"attack_three":
+			reset_hitboxes()
 			if state == State.ATTACK_THREE:
 				state = State.MOVE

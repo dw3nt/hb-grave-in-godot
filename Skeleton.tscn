@@ -397,6 +397,7 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 offset = Vector2( 16, 0 )
 hframes = 6
+frame = 5
 
 [node name="Anim" type="AnimationPlayer" parent="."]
 autoplay = "idle"
@@ -439,6 +440,7 @@ disabled = true
 [node name="AttackThree" parent="Hitboxes" groups=[
 "playerHitbox",
 ] instance=ExtResource( 8 )]
+visible = false
 position = Vector2( 30, 10 )
 rotation = -1.57179
 knockback = 150
