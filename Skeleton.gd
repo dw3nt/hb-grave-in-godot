@@ -10,6 +10,8 @@ export(bool) var allow_combo = false
 
 var motion = Vector2()
 var isFlipped = false
+var maxHp = 25
+var hp = maxHp
 
 onready var state = State.MOVE
 onready var hitboxes = get_tree().get_nodes_in_group("playerHitbox")
@@ -43,9 +45,11 @@ func process_attack(anim_name):
 		state += 1
 		
 		
-func process_hit(attacker):
-	print("Skeleton hit by " + attacker.name)
-	queue_free()
+func process_hit(attacker, damage):
+	print("Skeleton took " + str(damage) + " from " + attacker.name)
+	hp -= damage
+	if hp <= 0:
+		queue_free()
 	
 	
 func process_roll():

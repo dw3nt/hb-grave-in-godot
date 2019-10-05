@@ -5,12 +5,14 @@ enum State { IDLE, CHASE, ATTACK }
 const MAX_MOVE_SPEED = 50
 const ACCELERATION = 10
 
-onready var state = State.CHASE
-onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
-
 var motion = Vector2()
 var isFlipped = false
 var inAttackRange = false
+var maxHp = 25
+var hp = maxHp
+
+onready var state = State.CHASE
+onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
 
 func _physics_process(delta):
 	# may be a better way to tell enemies player doesn't exist (or is dead) cuz this seems like bad practice / inefficent
@@ -48,9 +50,11 @@ func process_attack():
 	motion.x = lerp(motion.x, 0, 0.25)
 	
 	
-func process_hit(attacker):
-	print("Knight hit by " + attacker.name)
-	queue_free()
+func process_hit(attacker, damage):
+	print("Knight took " + str(damage) + " from " + attacker.name)
+	hp -= damage
+	if hp <= 0:
+		queue_free()
 			
 
 func set_face_direction(faceTowards):
