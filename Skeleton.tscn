@@ -1,16 +1,17 @@
 [gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Skeleton.gd" type="Script" id=1]
-[ext_resource path="res://assets/sprites/skeleton/s_skeleton_idle_strip3.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/skeleton/s_skeleton_attack_two_strip5.png" type="Texture" id=2]
 [ext_resource path="res://assets/sprites/skeleton/s_skeleton_attack_one_strip5.png" type="Texture" id=3]
 [ext_resource path="res://assets/sprites/skeleton/s_skeleton_attack_three_strip6.png" type="Texture" id=4]
-[ext_resource path="res://assets/sprites/skeleton/s_skeleton_attack_two_strip5.png" type="Texture" id=5]
+[ext_resource path="res://assets/sprites/skeleton/s_skeleton_idle_strip3.png" type="Texture" id=5]
 [ext_resource path="res://assets/sprites/skeleton/s_skeleton_roll_strip7.png" type="Texture" id=6]
 [ext_resource path="res://assets/sprites/skeleton/s_skeleton_run_strip6.png" type="Texture" id=7]
 [ext_resource path="res://Hitbox.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Animation" id=1]
 length = 0.5
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -54,7 +55,7 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.1, 0.4 ),
+"times": PoolRealArray( 0, 0.2, 0.35 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ false, true, false ]
@@ -149,6 +150,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id=3]
 length = 0.5
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:texture")
 tracks/0/interp = 1
@@ -159,7 +161,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 5 ) ]
+"values": [ ExtResource( 2 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:hframes")
@@ -204,7 +206,7 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0.2, 0.5 ),
+"times": PoolRealArray( 0.3, 0.45 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
@@ -247,7 +249,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 2 ) ]
+"values": [ ExtResource( 5 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Sprite:hframes")
@@ -390,11 +392,12 @@ extents = Vector2( 2.03111, 27.0365 )
 [node name="Skeleton" type="KinematicBody2D"]
 collision_mask = 20
 script = ExtResource( 1 )
-allow_combo = true
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
-hframes = 3
+offset = Vector2( 20, 0 )
+hframes = 5
+frame = 4
 
 [node name="Anim" type="AnimationPlayer" parent="."]
 autoplay = "idle"
@@ -422,6 +425,7 @@ knockback = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitboxes/AttackOne"]
 shape = SubResource( 8 )
+disabled = true
 
 [node name="AttackTwo" parent="Hitboxes" groups=[
 "playerHitbox",
