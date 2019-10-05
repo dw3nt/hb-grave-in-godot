@@ -61,7 +61,12 @@ func process_attack():
 func process_hit(attacker, damage, knockback):
 	print("Knight took " + str(damage) + " from " + attacker.name)
 	state = State.KNOCKBACK
-	knockbackSpeed = knockback
+	if attacker.position.x > self.position.x:
+		knockbackSpeed = -knockback
+	else:
+		knockbackSpeed = knockback
+	set_face_direction(attacker)
+		
 	hp -= damage
 	if hp <= 0:
 		queue_free()
@@ -96,10 +101,7 @@ func _on_AttackDetect_body_exited(body):
 func _on_Anim_animation_started(anim_name):
 	match(anim_name):
 		"knockback":
-			if isFlipped:
-				motion.x = knockbackSpeed
-			else:
-				motion.x = -knockbackSpeed
+			motion.x = knockbackSpeed
 
 
 func _on_Anim_animation_finished(anim_name):
