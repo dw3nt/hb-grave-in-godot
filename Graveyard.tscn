@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Wall.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/sprites/environment/s_grass.png" type="Texture" id=2]
 [ext_resource path="res://assets/sprites/environment/s_clouds.png" type="Texture" id=3]
-[ext_resource path="res://Knight.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Skeleton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/sprites/environment/s_wall.png" type="Texture" id=4]
+[ext_resource path="res://Knight.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Skeleton.tscn" type="PackedScene" id=6]
 
 [node name="Graveyard" type="Node"]
 
@@ -16,31 +17,32 @@ position = Vector2( 16, 144 )
 [node name="WallRight" parent="Environment" instance=ExtResource( 1 )]
 position = Vector2( 1008, 144 )
 
-[node name="Ground" parent="Environment" instance=ExtResource( 1 )]
-position = Vector2( 496, 176 )
-scale = Vector2( 44, 1 )
-
 [node name="Grass" type="TextureRect" parent="Environment"]
-margin_left = -208.0
+margin_left = -256.0
 margin_top = 128.0
-margin_right = 1200.0
+margin_right = 1248.0
 margin_bottom = 168.0
 texture = ExtResource( 2 )
 stretch_mode = 2
 
 [node name="Clouds" type="TextureRect" parent="Environment"]
 modulate = Color( 0.568627, 0.568627, 0.568627, 1 )
-margin_left = -240.0
-margin_right = 1216.0
+margin_left = -288.0
+margin_right = 1264.0
 margin_bottom = 140.0
 texture = ExtResource( 3 )
 stretch_mode = 2
 
+[node name="Ground" type="Sprite" parent="Environment"]
+position = Vector2( 496, 176 )
+scale = Vector2( 47, 1 )
+texture = ExtResource( 4 )
+
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Knight" parent="Enemies" instance=ExtResource( 4 )]
+[node name="Knight" parent="Enemies" instance=ExtResource( 5 )]
 position = Vector2( 236, 136 )
 
-[node name="Skeleton" parent="." instance=ExtResource( 5 )]
+[node name="Skeleton" parent="." instance=ExtResource( 6 )]
 position = Vector2( 96, 136 )
 
