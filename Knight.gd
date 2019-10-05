@@ -8,7 +8,7 @@ const ACCELERATION = 10
 var motion = Vector2()
 var isFlipped = false
 var inAttackRange = false
-var maxHp = 100
+var maxHp = 25
 var hp = maxHp
 var knockbackSpeed = 0
 
