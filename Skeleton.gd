@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-enum State { MOVE, ROLL, ATTACK_ONE, ATTACK_TWO, ATTACK_THREE }
+enum State { MOVE, ROLL, KNOCKBACK, ATTACK_ONE, ATTACK_TWO, ATTACK_THREE }
 
 const MAX_RUN_SPEED = 200
 const ACCELERATION = 20
@@ -12,6 +12,7 @@ var motion = Vector2()
 var isFlipped = false
 var maxHp = 25
 var hp = maxHp
+var knockbackSpeed = 0
 
 onready var state = State.MOVE
 onready var hitboxes = get_tree().get_nodes_in_group("playerHitbox")
@@ -31,6 +32,8 @@ func _physics_process(delta):
 			process_attack("attack_two")
 		State.ATTACK_THREE:
 			process_attack("attack_three")
+		State.KNOCKBACK:
+			process_knockback()
 		State.MOVE:
 			process_move()
 	
@@ -47,9 +50,27 @@ func process_attack(anim_name):
 		
 func process_hit(attacker, damage, knockback):
 	print("Skeleton took " + str(damage) + " from " + attacker.name)
+	state = State.KNOCKBACK
+	if attacker.position.x > self.position.x:
+		knockbackSpeed = -knockback
+		if isFlipped:
+			isFlipped = false
+			scale.x = -1
+	else:
+		knockbackSpeed = knockback
+		if !isFlipped:
+			isFlipped = true
+			scale.x = -1
+			
 	hp -= damage
 	if hp <= 0:
 		queue_free()
+		
+	
+func process_knockback():
+	if $Anim.current_animation != "knockback":
+		$Anim.play("knockback")
+	motion.x = lerp(motion.x, 0, 0.025)
 	
 	
 func process_roll():
@@ -92,6 +113,12 @@ func should_stop():
 func reset_hitboxes():
 	for node in hitboxes:
 		node.get_child(0).disabled = true
+		
+		
+func _on_Anim_animation_started(anim_name):
+	match(anim_name):
+		"knockback":
+			motion.x = knockbackSpeed
 
 
 func _on_Anim_animation_finished(anim_name):
@@ -111,3 +138,5 @@ func _on_Anim_animation_finished(anim_name):
 			reset_hitboxes()
 			if state == State.ATTACK_THREE:
 				state = State.MOVE
+		"knockback":
+			state = State.MOVE
