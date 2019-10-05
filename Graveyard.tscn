@@ -8,17 +8,21 @@
 
 [node name="Walls" type="Node2D" parent="."]
 
-[node name="Wall1" parent="Walls" instance=ExtResource( 1 )]
-position = Vector2( 16, 136 )
+[node name="WallLeft" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 16, 144 )
 
-[node name="Wall2" parent="Walls" instance=ExtResource( 1 )]
-position = Vector2( 304, 136 )
+[node name="WallRight" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 1008, 144 )
+
+[node name="Ground" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 496, 176 )
+scale = Vector2( 40, 1 )
 
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Knight" parent="Enemies" instance=ExtResource( 2 )]
-position = Vector2( 256, 128 )
+position = Vector2( 236, 136 )
 
 [node name="Skeleton" parent="." instance=ExtResource( 3 )]
-position = Vector2( 59, 128 )
+position = Vector2( 96, 136 )
 
