@@ -246,7 +246,6 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 offset = Vector2( 20, 0 )
 hframes = 12
-frame = 4
 
 [node name="Anim" type="AnimationPlayer" parent="."]
 autoplay = "idle"
@@ -274,6 +273,7 @@ collision_mask = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 rotation = -1.20352
 shape = SubResource( 6 )
+disabled = true
 
 [connection signal="animation_finished" from="Anim" to="." method="_on_Anim_animation_finished"]
 [connection signal="animation_started" from="Anim" to="." method="_on_Anim_animation_started"]

@@ -8,12 +8,15 @@ const ACCELERATION = 10
 var motion = Vector2()
 var isFlipped = false
 var inAttackRange = false
-var maxHp = 25
+var maxHp = 100
 var hp = maxHp
 var knockbackSpeed = 0
 
 onready var state = State.CHASE
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
+
+func _ready():
+	reset_hitboxes()
 
 func _physics_process(delta):
 	# may be a better way to tell enemies player doesn't exist (or is dead) cuz this seems like bad practice / inefficent
@@ -85,6 +88,10 @@ func set_face_direction(faceTowards):
 	elif faceTowards.position.x < position.x && !isFlipped:
 		isFlipped = true
 		scale.x = -1
+		
+		
+func reset_hitboxes():
+	$Hitbox/CollisionShape2D.disabled = true
 	
 
 func _on_AttackDetect_body_entered(body):
