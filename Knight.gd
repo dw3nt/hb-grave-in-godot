@@ -4,13 +4,13 @@ enum State { IDLE, CHASE, ATTACK, KNOCKBACK }
 
 const MAX_MOVE_SPEED = 50
 const ACCELERATION = 10
-const MAX_KNOCKBACK_SPEED = 100
 
 var motion = Vector2()
 var isFlipped = false
 var inAttackRange = false
 var maxHp = 25
 var hp = maxHp
+var knockbackSpeed = 0
 
 onready var state = State.CHASE
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
@@ -58,9 +58,10 @@ func process_attack():
 	motion.x = lerp(motion.x, 0, 0.25)
 	
 	
-func process_hit(attacker, damage):
+func process_hit(attacker, damage, knockback):
 	print("Knight took " + str(damage) + " from " + attacker.name)
 	state = State.KNOCKBACK
+	knockbackSpeed = knockback
 	hp -= damage
 	if hp <= 0:
 		queue_free()
@@ -96,9 +97,9 @@ func _on_Anim_animation_started(anim_name):
 	match(anim_name):
 		"knockback":
 			if isFlipped:
-				motion.x = MAX_KNOCKBACK_SPEED
+				motion.x = knockbackSpeed
 			else:
-				motion.x = -MAX_KNOCKBACK_SPEED
+				motion.x = -knockbackSpeed
 
 
 func _on_Anim_animation_finished(anim_name):

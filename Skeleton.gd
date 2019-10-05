@@ -45,7 +45,7 @@ func process_attack(anim_name):
 		state += 1
 		
 		
-func process_hit(attacker, damage):
+func process_hit(attacker, damage, knockback):
 	print("Skeleton took " + str(damage) + " from " + attacker.name)
 	hp -= damage
 	if hp <= 0:

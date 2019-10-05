@@ -418,6 +418,7 @@ shape = SubResource( 7 )
 visible = false
 position = Vector2( 14.1078, 6.65189 )
 rotation = -1.19095
+knockback = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitboxes/AttackOne"]
 shape = SubResource( 8 )
@@ -426,6 +427,7 @@ shape = SubResource( 8 )
 "playerHitbox",
 ] instance=ExtResource( 8 )]
 visible = false
+knockback = 50
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitboxes/AttackTwo"]
 polygon = PoolVector2Array( 36.589, 17.9113, 45.8724, 16.9611, 42.6561, 5.63092, 35.9311, -2.70222, 22.3349, -8.40383, 16.0485, -10.4506, -0.398441, -10.9623, -11.9479, -6.79568, -0.32534, -7.81905, 16.9988, -5.18754, 26.7939, 0.952667, 32.4224, 10.894, 32.7148, 17.7651 )
@@ -435,6 +437,7 @@ disabled = true
 visible = false
 position = Vector2( 30, 10 )
 rotation = -1.57179
+knockback = 150
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitboxes/AttackThree"]
 shape = SubResource( 9 )
