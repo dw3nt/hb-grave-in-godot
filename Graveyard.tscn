@@ -108,7 +108,6 @@ position = Vector2( 1096, 140 )
 position = Vector2( 1168, 140 )
 
 [node name="Enemies" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="Knight" parent="Enemies" instance=ExtResource( 8 )]
 position = Vector2( 236, 136 )
@@ -118,4 +117,6 @@ position = Vector2( 96, 136 )
 
 [node name="UI" parent="." instance=ExtResource( 10 )]
 
+[connection signal="tree_exited" from="Enemies/Knight" to="Skeleton" method="_on_Knight_tree_exited"]
 [connection signal="hp_changed" from="Skeleton" to="UI" method="_on_Skeleton_hp_changed"]
+[connection signal="kills_changed" from="Skeleton" to="UI" method="_on_Skeleton_kills_changed"]

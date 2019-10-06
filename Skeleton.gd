@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 signal hp_changed(hp)
+signal kills_changed(val)
 
 enum State { MOVE, ROLL, KNOCKBACK, ATTACK_ONE, ATTACK_TWO, ATTACK_THREE }
 
@@ -14,6 +15,8 @@ var motion = Vector2()
 var isFlipped = false
 var maxHp = 25
 var hp = maxHp
+var level = 1
+var kills = 0
 var knockbackSpeed = 0
 
 onready var state = State.MOVE
@@ -151,3 +154,8 @@ func _on_Anim_animation_finished(anim_name):
 				state = State.MOVE
 		"knockback":
 			state = State.MOVE
+
+
+func _on_Knight_tree_exited():
+	kills += 1
+	emit_signal("kills_changed", kills)
