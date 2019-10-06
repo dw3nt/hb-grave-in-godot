@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal hp_changed(hp)
+
 enum State { MOVE, ROLL, KNOCKBACK, ATTACK_ONE, ATTACK_TWO, ATTACK_THREE }
 
 const MAX_RUN_SPEED = 200
@@ -64,6 +66,7 @@ func process_hit(attacker, damage, knockback):
 			scale.x = -1
 			
 	hp -= damage
+	emit_signal("hp_changed", hp)
 	if hp <= 0:
 		queue_free()
 		
