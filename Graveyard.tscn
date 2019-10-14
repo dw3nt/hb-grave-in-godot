@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Graveyard.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/environment/s_clouds.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Knight.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Skeleton.tscn" type="PackedScene" id=9]
 [ext_resource path="res://UI.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Experience.tscn" type="PackedScene" id=11]
 
 [node name="Graveyard" type="Node"]
 script = ExtResource( 1 )
@@ -116,6 +117,24 @@ position = Vector2( 236, 136 )
 position = Vector2( 96, 136 )
 
 [node name="UI" parent="." instance=ExtResource( 10 )]
+
+[node name="Experience" parent="." instance=ExtResource( 11 )]
+position = Vector2( 96, 112 )
+
+[node name="Experience2" parent="." instance=ExtResource( 11 )]
+position = Vector2( 96, 112 )
+
+[node name="Experience3" parent="." instance=ExtResource( 11 )]
+position = Vector2( 96, 112 )
+
+[node name="Experience4" parent="." instance=ExtResource( 11 )]
+position = Vector2( 96, 112 )
+
+[node name="Experience5" parent="." instance=ExtResource( 11 )]
+position = Vector2( 96, 112 )
+
+[node name="Experience6" parent="." instance=ExtResource( 11 )]
+position = Vector2( 96, 112 )
 
 [connection signal="tree_exited" from="Enemies/Knight" to="Skeleton" method="_on_Knight_tree_exited"]
 [connection signal="hp_changed" from="Skeleton" to="UI" method="_on_Skeleton_hp_changed"]
