@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Skeleton.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/skeleton/s_skeleton_idle_strip3.png" type="Texture" id=2]
@@ -443,6 +443,8 @@ height = 33.8541
 [sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 2.03111, 23.021 )
 
+[sub_resource type="RectangleShape2D" id=11]
+
 [node name="Skeleton" type="KinematicBody2D"]
 collision_mask = 20
 script = ExtResource( 1 )
@@ -512,5 +514,13 @@ smoothing_speed = 2.5
 drag_margin_left = 0.4
 drag_margin_right = 0.4
 
+[node name="ExpCollect" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExpCollect"]
+shape = SubResource( 11 )
+
 [connection signal="animation_finished" from="Anim" to="." method="_on_Anim_animation_finished"]
 [connection signal="animation_started" from="Anim" to="." method="_on_Anim_animation_started"]
+[connection signal="area_entered" from="ExpCollect" to="." method="_on_ExpCollect_area_entered"]

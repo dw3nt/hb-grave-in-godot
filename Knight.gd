@@ -11,6 +11,9 @@ var inAttackRange = false
 var maxHp = 25
 var hp = maxHp
 var knockbackSpeed = 0
+var expScene = load("res://Experience.tscn")
+var expOrbs = 5
+var expAmount = 1
 
 onready var state = State.CHASE
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
@@ -72,6 +75,12 @@ func process_hit(attacker, damage, knockback):
 		
 	hp -= damage
 	if hp <= 0:
+		var expParent = get_tree().get_root().find_node("Experience", true, false)
+		for i in range(expOrbs):
+			var inst = expScene.instance()
+			inst.global_position = global_position
+			inst.amount = expAmount
+			expParent.add_child(inst)
 		queue_free()
 		
 

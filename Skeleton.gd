@@ -1,7 +1,8 @@
 extends KinematicBody2D
 
-signal hp_changed(hp)
+signal hp_changed(hp, maxHp)
 signal kills_changed(val)
+signal level_changed(val)
 
 enum State { MOVE, ROLL, KNOCKBACK, ATTACK_ONE, ATTACK_TWO, ATTACK_THREE }
 
@@ -15,9 +16,11 @@ var motion = Vector2()
 var isFlipped = false
 var maxHp = 25
 var hp = maxHp
+var knockbackSpeed = 0
 var level = 1
 var kills = 0
-var knockbackSpeed = 0
+var maxExperience = 2
+var experience = 0
 
 onready var state = State.MOVE
 onready var hitboxes = get_tree().get_nodes_in_group("playerHitbox")
@@ -69,7 +72,7 @@ func process_hit(attacker, damage, knockback):
 			scale.x = -1
 			
 	hp -= damage
-	emit_signal("hp_changed", hp)
+	emit_signal("hp_changed", hp, maxHp)
 	if hp <= 0:
 		queue_free()
 		
@@ -159,3 +162,17 @@ func _on_Anim_animation_finished(anim_name):
 func _on_Knight_tree_exited():
 	kills += 1
 	emit_signal("kills_changed", kills)
+
+
+func _on_ExpCollect_area_entered(area):
+	if area.is_in_group("exp_orb"):
+		experience += area.amount
+		area.queue_free()
+		if experience >= maxExperience:
+			level += 1
+			emit_signal("level_changed", level)
+			experience = experience - maxExperience
+			maxExperience += maxExperience
+			maxHp += 5
+			hp = maxHp
+			emit_signal("hp_changed", hp, maxHp)

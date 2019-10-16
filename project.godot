@@ -85,6 +85,7 @@ attack={
 2d_physics/layer_3="Walls"
 2d_physics/layer_4="PlayerHit"
 2d_physics/layer_5="EnemyHit"
+2d_physics/layer_6="Experience"
 
 [rendering]
 
