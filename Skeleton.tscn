@@ -444,6 +444,7 @@ height = 33.8541
 extents = Vector2( 2.03111, 23.021 )
 
 [sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 10, 14.4288 )
 
 [node name="Skeleton" type="KinematicBody2D"]
 collision_mask = 20
@@ -519,6 +520,7 @@ collision_layer = 32
 collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExpCollect"]
+position = Vector2( 0, 8 )
 shape = SubResource( 11 )
 
 [connection signal="animation_finished" from="Anim" to="." method="_on_Anim_animation_finished"]
