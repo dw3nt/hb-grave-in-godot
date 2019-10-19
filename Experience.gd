@@ -2,10 +2,10 @@ extends Area2D
 
 enum State { EXPLODE, CHASE }
 
-const MIN_EXPLODE_SPEED = 2
-const MAX_EXPLODE_SPEED = 4
-const MIN_CHASE_SPEED = 4
-const MAX_CHASE_SPEED = 5
+const MIN_EXPLODE_SPEED = 4
+const MAX_EXPLODE_SPEED = 6
+const MIN_CHASE_SPEED = 7
+const MAX_CHASE_SPEED = 9
 const WIGGLE = 10
 
 var motion = Vector2()
@@ -42,7 +42,6 @@ func _physics_process(delta):
 			target.x += rand_range(-WIGGLE, WIGGLE)
 			target.y += rand_range(-WIGGLE, WIGGLE)
 
-# well now this needs help....
 			var desiredSpeed = (target - global_position).normalized() * chaseSpeed
 			var steering = (desiredSpeed - motion) / 35
 			motion += steering
