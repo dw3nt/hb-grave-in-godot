@@ -78,19 +78,23 @@ func process_hit(attacker, damage, knockback):
 		
 	hp -= damage
 	if hp <= 0:
-		var expParent = get_tree().get_root().find_node("Experience", true, false)
-		for i in range(expOrbs):
-			var inst = expScene.instance()
-			inst.global_position = global_position
-			inst.amount = expAmount
-			expParent.add_child(inst)
-		queue_free()
+		process_death()
 		
 
 func process_knockback():
 	if $Anim.current_animation != "knockback":
 		$Anim.play("knockback")
 	motion.x = lerp(motion.x, 0, 0.025)
+	
+	
+func process_death():
+	var expParent = get_tree().get_root().find_node("Experience", true, false)
+	for i in range(expOrbs):
+		var inst = expScene.instance()
+		inst.global_position = global_position
+		inst.amount = expAmount
+		expParent.add_child(inst)
+	queue_free()
 			
 
 func set_face_direction(faceTowards):

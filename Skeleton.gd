@@ -117,6 +117,18 @@ func process_move():
 			scale.x = -1
 	else:
 		$Anim.play("idle")
+		
+		
+func level_up():
+	level += 1
+	emit_signal("level_changed", level)
+	
+	experience = experience - maxExperience
+	maxExperience += maxExperience
+	
+	maxHp += 5
+	hp = maxHp
+	emit_signal("hp_changed", hp, maxHp)
 
 	
 func should_stop():
@@ -172,10 +184,4 @@ func _on_ExpCollect_area_entered(area):
 		experience += area.amount
 		area.queue_free()
 		if experience >= maxExperience:
-			level += 1
-			emit_signal("level_changed", level)
-			experience = experience - maxExperience
-			maxExperience += maxExperience
-			maxHp += 5
-			hp = maxHp
-			emit_signal("hp_changed", hp, maxHp)
+			level_up()
