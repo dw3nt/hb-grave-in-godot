@@ -28,13 +28,16 @@ func _physics_process(delta):
 	
 	match state:
 		State.IDLE:
+			reset_hitboxes()
 			process_idle()
 		State.CHASE:
+			reset_hitboxes()
 			set_face_direction(skeleton)
 			process_chase(skeleton)
 		State.ATTACK:
 			process_attack()
 		State.KNOCKBACK:
+			reset_hitboxes()
 			process_knockback()
 			
 	move_and_slide(motion)

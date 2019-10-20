@@ -33,6 +33,7 @@ func _ready():
 func _physics_process(delta):
 	match state:
 		State.ROLL:
+			reset_hitboxes()
 			process_roll()
 		State.ATTACK_ONE:
 			process_attack("attack_one")
@@ -41,8 +42,10 @@ func _physics_process(delta):
 		State.ATTACK_THREE:
 			process_attack("attack_three")
 		State.KNOCKBACK:
+			reset_hitboxes()
 			process_knockback()
 		State.MOVE:
+			reset_hitboxes()
 			process_move()
 	
 	move_and_slide(motion)
