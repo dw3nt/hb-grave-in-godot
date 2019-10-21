@@ -129,6 +129,10 @@ func level_up():
 	maxHp += 5
 	hp = maxHp
 	emit_signal("hp_changed", hp, maxHp)
+	
+	if level % 5 == 0:
+		for node in hitboxes:
+			node.damage += 5
 
 	
 func should_stop():
