@@ -6,6 +6,7 @@ const MAX_MOVE_SPEED = 50
 const ACCELERATION = 10
 
 var motion = Vector2()
+var isDodgeable = false
 var isFlipped = false
 var inAttackRange = false
 var maxHp = 25

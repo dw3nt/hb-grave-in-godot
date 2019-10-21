@@ -114,10 +114,10 @@ position = Vector2( 1168, 140 )
 position = Vector2( 236, 136 )
 
 [node name="Crow" parent="Enemies" instance=ExtResource( 9 )]
-position = Vector2( 48, 144 )
+position = Vector2( -168, 144 )
 
 [node name="Crow2" parent="Enemies" instance=ExtResource( 9 )]
-position = Vector2( 160, 140 )
+position = Vector2( 272, 144 )
 
 [node name="Experience" type="Node" parent="."]
 

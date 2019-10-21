@@ -1,21 +1,19 @@
 extends KinematicBody2D
 
-enum State { CHASE }
+enum State { CHASE, EXIT }
 
-const MAX_MOVE_SPEED = 50
-const ACCELERATION = 10
+const MAX_MOVE_SPEED = 100
 
 var motion = Vector2()
+var isDodgeable = true
 var isFlipped = false
-var attacked = false
 var maxHp = 1
 var hp = maxHp
 var knockbackSpeed = 0
 var expScene = load("res://Experience.tscn")
-var expOrbs = 5
+var expOrbs = 3
 var expAmount = 1
 
-onready var state = State.CHASE
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
 
 func _ready():
@@ -28,18 +26,19 @@ func _ready():
 	if dir < 0:
 		isFlipped = true
 		scale.x = -1		
+		motion.x = -MAX_MOVE_SPEED
+	else:
+		motion.x = MAX_MOVE_SPEED
 
 
 func _physics_process(delta):
-	# may be a better way to tell enemies player doesn't exist (or is dead) cuz this seems like bad practice / inefficent
-	if skeleton == null:
-		state = State.IDLE
+	move_and_slide(motion)
 	
-	match state:
-		State.CHASE:
-			process_chase()
-			
-			
-func process_chase():
+	
+func process_hit(attacker, damage, knockback):
 	pass
-			
+	
+
+func _on_Hitbox_body_entered(body):
+	if body.get_name() == "Skeleton":
+		motion.y = -MAX_MOVE_SPEED

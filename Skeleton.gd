@@ -61,23 +61,23 @@ func process_attack(anim_name):
 		
 		
 func process_hit(attacker, damage, knockback):
-	print("Skeleton took " + str(damage) + " from " + attacker.name)
-	state = State.KNOCKBACK
-	if attacker.position.x > self.position.x:
-		knockbackSpeed = -knockback
-		if isFlipped:
-			isFlipped = false
-			scale.x = -1
-	else:
-		knockbackSpeed = knockback
-		if !isFlipped:
-			isFlipped = true
-			scale.x = -1
-			
-	hp -= damage
-	emit_signal("hp_changed", hp, maxHp)
-	if hp <= 0:
-		queue_free()
+	if !(attacker.isDodgeable && state == State.ROLL):
+		state = State.KNOCKBACK
+		if attacker.position.x > self.position.x:
+			knockbackSpeed = -knockback
+			if isFlipped:
+				isFlipped = false
+				scale.x = -1
+		else:
+			knockbackSpeed = knockback
+			if !isFlipped:
+				isFlipped = true
+				scale.x = -1
+				
+		hp -= damage
+		emit_signal("hp_changed", hp, maxHp)
+		if hp <= 0:
+			queue_free()
 		
 	
 func process_knockback():
