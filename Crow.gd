@@ -1,8 +1,7 @@
 extends KinematicBody2D
 
-enum State { CHASE, EXIT }
-
-const MAX_MOVE_SPEED = 100
+const MAX_MOVE_SPEED = 125
+const OFF_SCREEN_LIMIT = -20
 
 var motion = Vector2()
 var isDodgeable = true
@@ -11,7 +10,7 @@ var maxHp = 1
 var hp = maxHp
 var knockbackSpeed = 0
 var expScene = load("res://Experience.tscn")
-var expOrbs = 3
+var expOrbs = 2
 var expAmount = 1
 
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
@@ -34,11 +33,31 @@ func _ready():
 func _physics_process(delta):
 	move_and_slide(motion)
 	
+	if global_position.y < OFF_SCREEN_LIMIT:
+		queue_free()
+	
 	
 func process_hit(attacker, damage, knockback):
-	pass
+	hp -= damage
+	if hp <= 0:
+		process_death()
+		
+		
+func process_death():
+	var expParent = get_tree().get_root().find_node("Experience", true, false)
+	for i in range(expOrbs):
+		var inst = expScene.instance()
+		inst.global_position = global_position
+		inst.amount = expAmount
+		expParent.add_child(inst)
+	queue_free()
 	
 
 func _on_Hitbox_body_entered(body):
 	if body.get_name() == "Skeleton":
 		motion.y = -MAX_MOVE_SPEED
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	print("i'm out")
+	queue_free()
