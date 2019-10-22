@@ -178,11 +178,6 @@ func _on_Anim_animation_finished(anim_name):
 			state = State.MOVE
 
 
-func _on_Knight_tree_exited():
-	kills += 1
-	emit_signal("kills_changed", kills)
-
-
 func _on_ExpCollect_area_entered(area):
 	if area.is_in_group("exp_orb"):
 		experience += area.amount
