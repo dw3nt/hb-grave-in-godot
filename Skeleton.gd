@@ -4,7 +4,7 @@ signal hp_changed(hp, maxHp)
 signal kills_changed(val)
 signal level_changed(val)
 
-enum State { MOVE, ROLL, KNOCKBACK, ATTACK_ONE, ATTACK_TWO, ATTACK_THREE }
+enum State { MOVE, ROLL, KNOCKBACK, ATTACK_ONE, ATTACK_TWO, ATTACK_THREE, DEATH }
 
 const MAX_RUN_SPEED = 200
 const ACCELERATION = 20
@@ -14,13 +14,15 @@ export(bool) var allow_combo = false
 
 var motion = Vector2()
 var isFlipped = false
-var maxHp = 25
+var maxHp = 1
 var hp = maxHp
 var knockbackSpeed = 0
 var level = 1
 var kills = 0
 var maxExperience = 2
 var experience = 0
+var bonePieces = 10
+var boneScene = preload("res://Bone.tscn")
 
 onready var state = State.MOVE
 onready var hitboxes = get_tree().get_nodes_in_group("playerHitbox")
@@ -77,7 +79,25 @@ func process_hit(attacker, damage, knockback):
 		hp -= damage
 		emit_signal("hp_changed", hp, maxHp)
 		if hp <= 0:
-			queue_free()
+			process_death()
+			
+			
+func process_death():
+	motion = Vector2(0, 0)
+	state = State.DEATH
+	$Sprite.visible = false
+	$ExpCollect/CollisionShape2D.disabled = true
+	$Hurtbox.disabled = true
+	reset_hitboxes()
+	
+	var boneParent = get_tree().get_root().find_node("Bones", true, false)
+	var bone
+	for i in range(bonePieces):	# for each frame of bone frame
+		bone = boneScene.instance()
+		bone.global_position = global_position
+		bone.boneFrame = i
+		bone.isFlipped = isFlipped
+		boneParent.add_child(bone)
 		
 	
 func process_knockback():

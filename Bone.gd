@@ -5,8 +5,8 @@ const GROUND_LIMIT = 154
 const SWORD_ANGLE = 220
 const SWORD_FRAME = 5
 
-#var boneFrame = rand_range(0, 9)
-var boneFrame = 5
+var boneFrame
+var isFlipped = false
 var motion
 
 func _ready():
@@ -16,7 +16,11 @@ func _ready():
 	else:
 		rotation_degrees = rand_range(0, 360)
 		
-	motion = Vector2(rand_range(-50, -250), rand_range(-100, -200))
+	var facing = -1
+	if isFlipped:
+		facing = 1
+		
+	motion = Vector2(rand_range(50 * facing, 250 * facing), rand_range(-100, -200))
 	
 	
 func _physics_process(delta):

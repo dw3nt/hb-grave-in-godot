@@ -18,7 +18,8 @@ func _ready():
 func _process(delta):
 	var enemyCount = $Enemies.get_child_count()
 	
-	if (enemyCount < ($Skeleton.kills / 4) && enemyCount <= MAX_ENEMY_COUNT) || enemyCount == 0:
+	if (enemyCount < ($Skeleton.kills / 4) && enemyCount <= MAX_ENEMY_COUNT) || enemyCount == 0 && $Skeleton.state != $Skeleton.State.DEATH:
+		print("spawned")
 		var enemy = enemies[randi() % enemies.size()].instance()
 		enemy.connect("enemy_death", $Skeleton, "_on_Enemy_Death")
 		
