@@ -512,8 +512,8 @@ drag_margin_h_enabled = false
 drag_margin_v_enabled = false
 smoothing_enabled = true
 smoothing_speed = 2.5
-drag_margin_left = 0.4
-drag_margin_right = 0.4
+drag_margin_left = 0.25
+drag_margin_right = 0.25
 
 [node name="ExpCollect" type="Area2D" parent="."]
 collision_layer = 32
