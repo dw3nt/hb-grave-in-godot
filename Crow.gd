@@ -38,7 +38,6 @@ func _physics_process(delta):
 	move_and_slide(motion)
 	
 	if global_position.y < OFF_SCREEN_LIMIT_UP || global_position.x < OFF_SCREEN_LIMIT_LEFT || global_position.x > OFF_SCREEN_LIMIT_RIGHT:
-		print("bye!")
 		queue_free()
 	
 	
