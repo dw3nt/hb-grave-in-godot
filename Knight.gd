@@ -71,7 +71,6 @@ func process_attack():
 	
 	
 func process_hit(attacker, damage, knockback):
-	print("Knight took " + str(damage) + " from " + attacker.name)
 	state = State.KNOCKBACK
 	if attacker.position.x > self.position.x:
 		knockbackSpeed = -knockback

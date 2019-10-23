@@ -3,7 +3,9 @@ extends KinematicBody2D
 signal enemy_death
 
 const MAX_MOVE_SPEED = 125
-const OFF_SCREEN_LIMIT = -20
+const OFF_SCREEN_LIMIT_UP = -20
+const OFF_SCREEN_LIMIT_LEFT = -300
+const OFF_SCREEN_LIMIT_RIGHT = 2000
 
 var motion = Vector2()
 var isDodgeable = true
@@ -35,7 +37,8 @@ func _ready():
 func _physics_process(delta):
 	move_and_slide(motion)
 	
-	if global_position.y < OFF_SCREEN_LIMIT:
+	if global_position.y < OFF_SCREEN_LIMIT_UP || global_position.x < OFF_SCREEN_LIMIT_LEFT || global_position.x > OFF_SCREEN_LIMIT_RIGHT:
+		print("bye!")
 		queue_free()
 	
 	
@@ -59,7 +62,8 @@ func process_death():
 
 func _on_Hitbox_body_entered(body):
 	if body.get_name() == "Skeleton":
-		motion.y = -MAX_MOVE_SPEED
+		if body.state != body.State.ROLL:
+			motion.y = -MAX_MOVE_SPEED
 
 
 func _on_VisibilityNotifier2D_screen_exited():
