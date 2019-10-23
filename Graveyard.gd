@@ -1,7 +1,7 @@
 extends Node
 
 const MAX_ENEMY_COUNT = 5
-const PLAYER_WALL_RANGE = 150 	# this is an estimate
+const PLAYER_WALL_RANGE = 300 	# this is an estimate
 const CAMERA_OFFSET = 200 		# this is an estimate
 const ENEMY_BUFFER = 20 		# this is an estimate
 const ENEMY_BUFFER_LOW = 8		# this is an estimate
