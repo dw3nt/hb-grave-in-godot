@@ -15,6 +15,8 @@ func _process(delta):
 	
 	if enemyCount < MAX_ENEMY_COUNT:
 		var enemy = enemies[randi() % enemies.size()].instance()
+		enemy.connect("enemy_death", $Skeleton, "_on_Enemy_Death")
+		
 		enemy.global_position.y = $Skeleton.global_position.y
 		enemy.global_position.x = enemy_x_pos()
 		$Enemies.add_child(enemy)

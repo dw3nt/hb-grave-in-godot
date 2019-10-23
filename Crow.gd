@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal enemy_death
+
 const MAX_MOVE_SPEED = 125
 const OFF_SCREEN_LIMIT = -20
 
@@ -50,6 +52,8 @@ func process_death():
 		inst.global_position = global_position
 		inst.amount = expAmount
 		expParent.add_child(inst)
+		
+	emit_signal("enemy_death")
 	queue_free()
 	
 

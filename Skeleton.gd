@@ -151,6 +151,11 @@ func set_camera_facing():
 		$Camera.offset_h = 1
 		
 		
+func _on_Enemy_Death():
+	kills += 1
+	emit_signal("kills_changed", kills)
+		
+		
 func _on_Anim_animation_started(anim_name):
 	match(anim_name):
 		"knockback":

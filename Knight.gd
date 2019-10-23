@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal enemy_death
+
 enum State { IDLE, CHASE, ATTACK, KNOCKBACK }
 
 const MAX_MOVE_SPEED = 50
@@ -95,6 +97,8 @@ func process_death():
 		inst.global_position = global_position
 		inst.amount = expAmount
 		expParent.add_child(inst)
+	
+	emit_signal("enemy_death")
 	queue_free()
 			
 
