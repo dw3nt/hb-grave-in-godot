@@ -74,6 +74,7 @@ stretch_mode = 2
 [node name="Ground" type="Sprite" parent="Environment"]
 position = Vector2( 496, 176 )
 scale = Vector2( 47, 1 )
+z_index = 5
 texture = ExtResource( 6 )
 
 [node name="Tombstones" type="Node" parent="Environment"]
