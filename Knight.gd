@@ -17,6 +17,7 @@ var knockbackSpeed = 0
 var expScene = load("res://Experience.tscn")
 var expOrbs = 5
 var expAmount = 1
+var shouldIdle = false
 
 onready var state = State.CHASE
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
@@ -123,6 +124,10 @@ func _on_AttackDetect_body_entered(body):
 func _on_AttackDetect_body_exited(body):
 	if body.get_name() == "Skeleton":
 		inAttackRange = false
+		
+
+func _on_Player_Death():
+	shouldIdle = true
 
 
 func _on_Anim_animation_started(anim_name):
@@ -146,3 +151,6 @@ func _on_Anim_animation_finished(anim_name):
 				state = State.ATTACK
 			else:
 				state = State.CHASE
+				
+	if shouldIdle:
+		state = State.IDLE

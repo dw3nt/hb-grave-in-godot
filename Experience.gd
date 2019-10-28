@@ -25,6 +25,7 @@ func _ready():
 	#		- normalize it, cuz just want it for direction, then set magnitude to distance to 150
 	#		- then add it to origin (which is the orb's global position) so target is 150 pixels away from origin in a random direction
 	target = origin + ( Vector2(rand_range(-1, 1), rand_range(-1, 0.05)).normalized() * 150 )
+	skeleton.connect("player_death", self, "_on_Player_Death")
 	
 
 func _physics_process(delta):
@@ -47,3 +48,7 @@ func _physics_process(delta):
 			motion += steering
 
 	global_position += motion
+	
+	
+func _on_Player_Death():
+	queue_free()

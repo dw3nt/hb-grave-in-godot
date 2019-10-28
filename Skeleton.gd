@@ -3,6 +3,7 @@ extends KinematicBody2D
 signal hp_changed(hp, maxHp)
 signal kills_changed(val)
 signal level_changed(val)
+signal player_death
 
 enum State { MOVE, ROLL, KNOCKBACK, ATTACK_ONE, ATTACK_TWO, ATTACK_THREE, DEATH }
 
@@ -14,7 +15,7 @@ export(bool) var allow_combo = false
 
 var motion = Vector2()
 var isFlipped = false
-var maxHp = 1
+var maxHp = 25
 var hp = maxHp
 var knockbackSpeed = 0
 var level = 1
@@ -23,13 +24,21 @@ var maxExperience = 2
 var experience = 0
 var bonePieces = 10
 var boneScene = preload("res://Bone.tscn")
+var processDeath = false
 
 onready var state = State.MOVE
 onready var hitboxes = get_tree().get_nodes_in_group("playerHitbox")
+onready var boneParent = get_tree().get_root().find_node("Bones", true, false)
 
 
 func _ready():
 	reset_hitboxes()
+	
+
+func _process(delta):
+	if processDeath:
+		process_death()
+		processDeath = false
 
 
 func _physics_process(delta):
@@ -79,25 +88,18 @@ func process_hit(attacker, damage, knockback):
 		hp -= damage
 		emit_signal("hp_changed", hp, maxHp)
 		if hp <= 0:
-			process_death()
+			processDeath = true
 			
 			
 func process_death():
-	motion = Vector2(0, 0)
-	state = State.DEATH
-	$Sprite.visible = false
-	$ExpCollect/CollisionShape2D.disabled = true
-	$Hurtbox.disabled = true
-	reset_hitboxes()
-	
-	var boneParent = get_tree().get_root().find_node("Bones", true, false)
-	var bone
 	for i in range(bonePieces):	# for each frame of bone frame
-		bone = boneScene.instance()
+		var bone = boneScene.instance()
 		bone.global_position = global_position
-		bone.boneFrame = i
 		bone.isFlipped = isFlipped
+		bone.boneFrame = i
 		boneParent.add_child(bone)
+		
+	emit_signal("player_death")
 		
 	
 func process_knockback():
@@ -204,7 +206,7 @@ func _on_Anim_animation_finished(anim_name):
 
 
 func _on_ExpCollect_area_entered(area):
-	if area.is_in_group("exp_orb"):
+	if area.is_in_group("exp_orb") && state != State.DEATH:
 		experience += area.amount
 		area.queue_free()
 		if experience >= maxExperience:

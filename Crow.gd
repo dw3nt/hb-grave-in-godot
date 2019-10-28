@@ -65,6 +65,5 @@ func _on_Hitbox_body_entered(body):
 			motion.y = -MAX_MOVE_SPEED
 
 
-func _on_VisibilityNotifier2D_screen_exited():
-	print("i'm out")
-	queue_free()
+func _on_Player_Death():
+	pass

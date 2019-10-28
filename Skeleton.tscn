@@ -465,11 +465,11 @@ anims/roll = SubResource( 6 )
 anims/run = SubResource( 7 )
 
 [node name="Hurtbox" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0, 8 )
 shape = SubResource( 8 )
 
 [node name="Hitboxes" type="Node2D" parent="."]
+visible = false
 
 [node name="AttackOne" parent="Hitboxes" groups=[
 "playerHitbox",
@@ -516,6 +516,7 @@ drag_margin_left = 0.25
 drag_margin_right = 0.25
 
 [node name="ExpCollect" type="Area2D" parent="."]
+visible = false
 collision_layer = 32
 collision_mask = 32
 

@@ -54,6 +54,7 @@ texture = ExtResource( 3 )
 stretch_mode = 2
 
 [node name="Environment" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="WallLeft" parent="Environment" instance=ExtResource( 4 )]
 position = Vector2( 16, 144 )
@@ -119,3 +120,4 @@ position = Vector2( 96, 136 )
 [connection signal="hp_changed" from="Skeleton" to="UI" method="_on_Skeleton_hp_changed"]
 [connection signal="kills_changed" from="Skeleton" to="UI" method="_on_Skeleton_kills_changed"]
 [connection signal="level_changed" from="Skeleton" to="UI" method="_on_Skeleton_level_changed"]
+[connection signal="player_death" from="Skeleton" to="." method="_on_Skeleton_player_death"]

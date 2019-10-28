@@ -18,14 +18,15 @@ func _ready():
 func _process(delta):
 	var enemyCount = $Enemies.get_child_count()
 	
-	if (enemyCount < ($Skeleton.kills / 4) && enemyCount <= MAX_ENEMY_COUNT) || enemyCount == 0 && $Skeleton.state != $Skeleton.State.DEATH:
-		print("spawned")
-		var enemy = enemies[randi() % enemies.size()].instance()
-		enemy.connect("enemy_death", $Skeleton, "_on_Enemy_Death")
-		
-		enemy.global_position.y = $Skeleton.global_position.y
-		enemy.global_position.x = enemy_x_pos()
-		$Enemies.add_child(enemy)
+	if find_node("Skeleton"):
+		if (enemyCount < ($Skeleton.kills / 4) && enemyCount <= MAX_ENEMY_COUNT) || enemyCount == 0:
+			var enemy = enemies[randi() % enemies.size()].instance()
+			enemy.connect("enemy_death", $Skeleton, "_on_Enemy_Death")
+			$Skeleton.connect("player_death", enemy, "_on_Player_Death")
+			
+			enemy.global_position.y = $Skeleton.global_position.y
+			enemy.global_position.x = enemy_x_pos()
+			$Enemies.add_child(enemy)
 		
 		
 func enemy_x_pos():
@@ -63,4 +64,10 @@ func enemy_x_pos():
 		
 	return xPos
 	
-	
+
+func _on_Skeleton_player_death():	# switch cameras so I can delete player node
+	var deathCam = $Skeleton/Camera.duplicate()
+	deathCam.global_position = $Skeleton/Camera.global_position
+	add_child(deathCam)
+	deathCam.current = true
+	$Skeleton.queue_free()
