@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 const GRAVITY = 10
-const GROUND_LIMIT = 154
+const GROUND_LIMIT = 156
 const SWORD_ANGLE = 220
 const SWORD_FRAME = 5
 
