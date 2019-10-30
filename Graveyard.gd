@@ -67,7 +67,10 @@ func enemy_x_pos():
 
 func _on_Skeleton_player_death():	# switch cameras so I can delete player node
 	var deathCam = $Skeleton/Camera.duplicate()
-	deathCam.global_position = $Skeleton/Camera.global_position
+	deathCam.global_position = $Skeleton/Camera.get_camera_position()
+	deathCam.global_position.x = $Skeleton/Camera.get_camera_screen_center().x
+	deathCam.offset_h = 0
+	
 	add_child(deathCam)
 	deathCam.current = true
 	$Skeleton.queue_free()

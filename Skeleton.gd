@@ -89,6 +89,7 @@ func process_hit(attacker, damage, knockback):
 		emit_signal("hp_changed", hp, maxHp)
 		if hp <= 0:
 			processDeath = true
+			state = State.DEATH
 			
 			
 func process_death():
