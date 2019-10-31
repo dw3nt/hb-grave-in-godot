@@ -7,6 +7,9 @@ const ENEMY_BUFFER = 20 		# this is an estimate
 const ENEMY_BUFFER_LOW = 8		# this is an estimate
 const ENEMY_BUFFER_HIGH = 16	# this is an estimate
 
+var screenShake = 0
+var deathCam
+
 onready var enemies = [ load("res://Knight.tscn"), load("res://Crow.tscn"), load("res://Crow.tscn") ]
 onready var wallLeftX = $Environment/WallLeft.global_position.x + 20
 onready var wallRightX = $Environment/WallRight.global_position.x - 20
@@ -27,6 +30,9 @@ func _process(delta):
 			enemy.global_position.y = $Skeleton.global_position.y
 			enemy.global_position.x = enemy_x_pos()
 			$Enemies.add_child(enemy)
+	else:
+		if screenShake > 0:
+			process_camera_shake()
 		
 		
 func enemy_x_pos():
@@ -64,13 +70,24 @@ func enemy_x_pos():
 		
 	return xPos
 	
+	
+func process_camera_shake():
+	if screenShake > 0.15:	# lessening by 15% everytime means I'll never really hit 0
+		deathCam.offset = Vector2(rand_range(-screenShake, screenShake), rand_range(-screenShake, screenShake) - 36)
+		screenShake *= 0.85	# lessent shake by 15% each frame - basically this is the duration
+	else:
+		# set back to normal offset
+		deathCam.offset = Vector2(0, -36)
+		screenShake = 0
+	
 
 func _on_Skeleton_player_death():	# switch cameras so I can delete player node
-	var deathCam = $Skeleton/Camera.duplicate()
+	deathCam = $Skeleton/Camera.duplicate()
 	deathCam.global_position = $Skeleton/Camera.get_camera_position()
 	deathCam.global_position.x = $Skeleton/Camera.get_camera_screen_center().x
 	deathCam.offset_h = 0
 	
 	add_child(deathCam)
 	deathCam.current = true
+	screenShake = 17
 	$Skeleton.queue_free()

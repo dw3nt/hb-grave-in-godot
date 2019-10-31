@@ -22,6 +22,7 @@ var level = 1
 var kills = 0
 var maxExperience = 2
 var experience = 0
+var screenShake = 0
 var bonePieces = 10
 var boneScene = preload("res://Bone.tscn")
 var processDeath = false
@@ -39,6 +40,9 @@ func _process(delta):
 	if processDeath:
 		process_death()
 		processDeath = false
+		
+	if screenShake > 0:
+		process_camera_shake()
 
 
 func _physics_process(delta):
@@ -85,11 +89,22 @@ func process_hit(attacker, damage, knockback):
 				isFlipped = true
 				scale.x = -1
 				
+		screenShake = 5
 		hp -= damage
 		emit_signal("hp_changed", hp, maxHp)
 		if hp <= 0:
 			processDeath = true
 			state = State.DEATH
+			
+			
+func process_camera_shake():
+	if screenShake > 0.15:	# lessening by 15% everytime means I'll never really hit 0
+		$Camera.offset = Vector2(rand_range(-screenShake, screenShake), rand_range(-screenShake, screenShake) - 36)
+		screenShake *= 0.85	# lessent shake by 15% each frame - basically this is the duration
+	else:
+		# set back to normal offset
+		$Camera.offset = Vector2(0, -36)
+		screenShake = 0
 			
 			
 func process_death():
