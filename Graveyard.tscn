@@ -54,7 +54,6 @@ texture = ExtResource( 3 )
 stretch_mode = 2
 
 [node name="Environment" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="WallLeft" parent="Environment" instance=ExtResource( 4 )]
 position = Vector2( 16, 144 )
@@ -71,8 +70,8 @@ texture = ExtResource( 5 )
 stretch_mode = 2
 
 [node name="Ground" type="Sprite" parent="Environment"]
-position = Vector2( 496, 176 )
-scale = Vector2( 47, 1 )
+position = Vector2( 496, 192 )
+scale = Vector2( 47, 2 )
 z_index = 5
 texture = ExtResource( 6 )
 
