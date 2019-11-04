@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Graveyard.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/environment/s_clouds.png" type="Texture" id=2]
@@ -7,8 +7,9 @@
 [ext_resource path="res://assets/sprites/environment/s_grass.png" type="Texture" id=5]
 [ext_resource path="res://assets/sprites/environment/s_wall.png" type="Texture" id=6]
 [ext_resource path="res://Tombstone.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Skeleton.tscn" type="PackedScene" id=8]
-[ext_resource path="res://UI.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Knight.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Skeleton.tscn" type="PackedScene" id=9]
+[ext_resource path="res://UI.tscn" type="PackedScene" id=10]
 
 [node name="Graveyard" type="Node"]
 script = ExtResource( 1 )
@@ -54,6 +55,7 @@ texture = ExtResource( 3 )
 stretch_mode = 2
 
 [node name="Environment" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="WallLeft" parent="Environment" instance=ExtResource( 4 )]
 position = Vector2( 16, 144 )
@@ -105,16 +107,21 @@ position = Vector2( 1096, 140 )
 [node name="Tombstone9" parent="Environment/Tombstones" instance=ExtResource( 7 )]
 position = Vector2( 1168, 140 )
 
-[node name="Bones" type="Node" parent="."]
-
 [node name="Enemies" type="Node2D" parent="."]
+
+[node name="Knight" parent="Enemies" instance=ExtResource( 8 )]
+position = Vector2( 224, 136 )
+
+[node name="Bones" type="Node" parent="."]
 
 [node name="Experience" type="Node" parent="."]
 
-[node name="Skeleton" parent="." instance=ExtResource( 8 )]
+[node name="HitEffects" type="Node" parent="."]
+
+[node name="Skeleton" parent="." instance=ExtResource( 9 )]
 position = Vector2( 96, 136 )
 
-[node name="UI" parent="." instance=ExtResource( 9 )]
+[node name="UI" parent="." instance=ExtResource( 10 )]
 
 [connection signal="hp_changed" from="Skeleton" to="UI" method="_on_Skeleton_hp_changed"]
 [connection signal="kills_changed" from="Skeleton" to="UI" method="_on_Skeleton_kills_changed"]

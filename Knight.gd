@@ -19,15 +19,34 @@ var expScene = load("res://Experience.tscn")
 var expOrbs = 5
 var expAmount = 1
 var shouldIdle = false
+var hitEffectScene = load("res://HitEffect.tscn")
+var hitEffectAmount = 6
+var shouldSpawnHit = false
 
 onready var state = State.CHASE
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
+onready var hitEffectsParnet = get_tree().get_root().find_node("HitEffects", true, false)
 
 func _ready():
+	randomize()
+	
 	$EnemyHP.hpTotal = maxHp
 	$EnemyHP.currentHp = maxHp
 	$EnemyHP.init()
+	
 	reset_hitboxes()
+
+
+func _process(delta):
+	if shouldSpawnHit:
+		var spacing = 360 / hitEffectAmount
+		for i in range(hitEffectAmount):
+			var inst = hitEffectScene.instance()
+			inst.global_position = global_position
+			inst.set_rotation_degrees(i * spacing + rand_range(-30, 30))
+			hitEffectsParnet.add_child(inst)
+		shouldSpawnHit = false
+
 
 func _physics_process(delta):
 	# may be a better way to tell enemies player doesn't exist (or is dead) cuz this seems like bad practice / inefficent
@@ -82,6 +101,8 @@ func process_hit(attacker, damage, knockback):
 	else:
 		knockbackSpeed = knockback
 	set_face_direction(attacker)
+	
+	shouldSpawnHit = true
 		
 	hp -= damage
 	if hp <= 0:
