@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Knight.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/knight/s_knight_walk_strip4.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/sprites/knight/s_knight_idle_strip3.png" type="Texture" id=4]
 [ext_resource path="res://assets/sprites/knight/s_knight_hitstun.png" type="Texture" id=5]
 [ext_resource path="res://Hitbox.tscn" type="PackedScene" id=6]
+[ext_resource path="res://EnemyHP.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "attack"
@@ -275,6 +276,11 @@ collision_mask = 1
 rotation = -1.20352
 shape = SubResource( 7 )
 disabled = true
+
+[node name="EnemyHP" parent="." instance=ExtResource( 7 )]
+position = Vector2( 0, -18 )
+hpHeight = 6
+hpWidth = 30
 
 [connection signal="animation_finished" from="Anim" to="." method="_on_Anim_animation_finished"]
 [connection signal="animation_started" from="Anim" to="." method="_on_Anim_animation_started"]

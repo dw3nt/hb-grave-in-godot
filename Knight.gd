@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+signal knight_hp_changed
 signal enemy_death
 
 enum State { IDLE, CHASE, ATTACK, KNOCKBACK }
@@ -23,6 +24,9 @@ onready var state = State.CHASE
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
 
 func _ready():
+	$EnemyHP.hpTotal = maxHp
+	$EnemyHP.currentHp = maxHp
+	$EnemyHP.init()
 	reset_hitboxes()
 
 func _physics_process(delta):
@@ -82,6 +86,9 @@ func process_hit(attacker, damage, knockback):
 	hp -= damage
 	if hp <= 0:
 		process_death()
+	else:
+		$EnemyHP.update_hp(hp)
+		emit_signal("knight_hp_changed", hp)
 		
 
 func process_knockback():
@@ -106,9 +113,11 @@ func set_face_direction(faceTowards):
 	if faceTowards.position.x > position.x && isFlipped:
 		isFlipped = false
 		scale.x = -1
+		$EnemyHP.set_rotation_degrees(0)
 	elif faceTowards.position.x < position.x && !isFlipped:
 		isFlipped = true
 		scale.x = -1
+		$EnemyHP.set_rotation_degrees(180)
 		
 		
 func reset_hitboxes():
