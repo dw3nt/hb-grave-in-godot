@@ -103,6 +103,7 @@ func process_hit(attacker, damage, knockback):
 	set_face_direction(attacker)
 	
 	shouldSpawnHit = true
+	skeleton.setup_camera_shake(2, 0.25)
 		
 	hp -= damage
 	if hp <= 0:

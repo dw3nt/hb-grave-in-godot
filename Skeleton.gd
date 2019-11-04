@@ -23,6 +23,7 @@ var kills = 0
 var maxExperience = 2
 var experience = 0
 var screenShake = 0
+var screenShakeReduction = 0.85
 var bonePieces = 10
 var boneScene = preload("res://Bone.tscn")
 var processDeath = false
@@ -42,6 +43,7 @@ func _process(delta):
 		processDeath = false
 		
 	if screenShake > 0:
+		print(screenShake)
 		process_camera_shake()
 
 
@@ -89,7 +91,7 @@ func process_hit(attacker, damage, knockback):
 				isFlipped = true
 				scale.x = -1
 				
-		screenShake = 5
+		setup_camera_shake(5, 0.15)
 		hp -= damage
 		emit_signal("hp_changed", hp, maxHp)
 		if hp <= 0:
@@ -100,11 +102,14 @@ func process_hit(attacker, damage, knockback):
 func process_camera_shake():
 	if screenShake > 0.15:	# lessening by 15% everytime means I'll never really hit 0
 		$Camera.offset = Vector2(rand_range(-screenShake, screenShake), rand_range(-screenShake, screenShake) - 36)
-		screenShake *= 0.85	# lessent shake by 15% each frame - basically this is the duration
+		screenShake *= screenShakeReduction	# lessen shake by % each frame - basically this is the duration
+		print(screenShake)
 	else:
 		# set back to normal offset
+		print("done")
 		$Camera.offset = Vector2(0, -36)
 		screenShake = 0
+		screenShakeReduction = 0.85
 			
 			
 func process_death():
@@ -187,6 +192,11 @@ func set_camera_facing():
 		$Camera.offset_h = -1
 	else:
 		$Camera.offset_h = 1
+		
+		
+func setup_camera_shake(intensity, reduction):
+	screenShake = intensity
+	screenShakeReduction = 1 - reduction
 		
 		
 func _on_Enemy_Death():
