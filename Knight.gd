@@ -3,7 +3,7 @@ extends KinematicBody2D
 signal knight_hp_changed
 signal enemy_death
 
-enum State { IDLE, CHASE, ATTACK, KNOCKBACK }
+enum State { IDLE, CHASE, ATTACK, KNOCKBACK, DEATH }
 
 const MAX_MOVE_SPEED = 50
 const ACCELERATION = 10
@@ -117,6 +117,13 @@ func process_hit(attacker, damage, knockback):
 		$EnemyHP.update_hp(hp)
 		emit_signal("knight_hp_changed", hp)
 		
+		
+func process_death():
+	state = State.DEATH
+	motion = Vector2(0, 0)
+	$Anim.play("death")
+	$EnemyHP.visible = false
+		
 
 func process_knockback():
 	if $Anim.current_animation != "knockback":
@@ -124,16 +131,13 @@ func process_knockback():
 	motion.x = lerp(motion.x, 0, 0.025)
 	
 	
-func process_death():
+func spawn_experience():
 	var expParent = get_tree().get_root().find_node("Experience", true, false)
 	for i in range(expOrbs):
 		var inst = expScene.instance()
 		inst.global_position = global_position
 		inst.amount = expAmount
 		expParent.add_child(inst)
-	
-	emit_signal("enemy_death")
-	queue_free()
 			
 
 func set_face_direction(faceTowards):
@@ -183,10 +187,19 @@ func _on_Anim_animation_finished(anim_name):
 			else:
 				skeleton = null
 		"knockback":
-			if inAttackRange:
-				state = State.ATTACK
+			if shouldDie:
+				state = State.DEATH
 			else:
-				state = State.CHASE
+				if inAttackRange:
+					state = State.ATTACK
+				else:
+					state = State.CHASE
+		"death":
+			$Anim.play("death-fade")
+			spawn_experience()
+		"death-fade":
+			emit_signal("enemy_death")
+			queue_free()
 				
 	if shouldIdle:
 		state = State.IDLE
