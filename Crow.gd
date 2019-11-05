@@ -19,12 +19,16 @@ var expAmount = 1
 var shouldSpawnHit = false
 var hitEffectScene = load("res://HitEffect.tscn")
 var hitEffectAmount = 4
+var featherScene = load("res://Feather.tscn")
+var featherAmount = 4
 var shouldDie = false
 
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
 onready var hitEffectsParnet = get_tree().get_root().find_node("HitEffects", true, false)
 
 func _ready():
+	randomize()
+	
 	var dir = null
 	if skeleton == null:
 		dir = rand_range(-1, 1)
@@ -43,7 +47,6 @@ func _process(delta):
 	if shouldSpawnHit:
 		var spacing = 360 / hitEffectAmount
 		for i in range(hitEffectAmount):
-			print("hit effect")
 			var inst = hitEffectScene.instance()
 			inst.global_position = global_position
 			inst.set_rotation_degrees(i * spacing + rand_range(-30, 30))
@@ -72,15 +75,29 @@ func process_hit(attacker, damage, knockback):
 		
 		
 func process_death():
+	spawn_experience()
+	spawn_feathers()
+		
+	emit_signal("enemy_death")
+	queue_free()
+	
+	
+func spawn_feathers():
+	var spacing = 360 / featherAmount
+	for i in range(featherAmount):
+		var inst = featherScene.instance()
+		inst.global_position = global_position
+		inst.set_rotation_degrees(i * spacing + rand_range(-30, 30))
+		hitEffectsParnet.add_child(inst)
+	
+	
+func spawn_experience():
 	var expParent = get_tree().get_root().find_node("Experience", true, false)
 	for i in range(expOrbs):
 		var inst = expScene.instance()
 		inst.global_position = global_position
 		inst.amount = expAmount
 		expParent.add_child(inst)
-		
-	emit_signal("enemy_death")
-	queue_free()
 	
 
 func _on_Hitbox_body_entered(body):
