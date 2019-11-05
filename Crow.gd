@@ -16,8 +16,13 @@ var knockbackSpeed = 0
 var expScene = load("res://Experience.tscn")
 var expOrbs = 2
 var expAmount = 1
+var shouldSpawnHit = false
+var hitEffectScene = load("res://HitEffect.tscn")
+var hitEffectAmount = 4
+var shouldDie = false
 
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
+onready var hitEffectsParnet = get_tree().get_root().find_node("HitEffects", true, false)
 
 func _ready():
 	var dir = null
@@ -32,6 +37,22 @@ func _ready():
 		motion.x = -MAX_MOVE_SPEED
 	else:
 		motion.x = MAX_MOVE_SPEED
+		
+		
+func _process(delta):
+	if shouldSpawnHit:
+		var spacing = 360 / hitEffectAmount
+		for i in range(hitEffectAmount):
+			print("hit effect")
+			var inst = hitEffectScene.instance()
+			inst.global_position = global_position
+			inst.set_rotation_degrees(i * spacing + rand_range(-30, 30))
+			hitEffectsParnet.add_child(inst)
+		shouldSpawnHit = false
+		
+	if shouldDie:
+		process_death()
+		shouldDie = false
 
 
 func _physics_process(delta):
@@ -42,9 +63,12 @@ func _physics_process(delta):
 	
 	
 func process_hit(attacker, damage, knockback):
+	shouldSpawnHit = true
+	skeleton.setup_camera_shake(2, 0.25)
+	
 	hp -= damage
 	if hp <= 0:
-		process_death()
+		shouldDie = true
 		
 		
 func process_death():

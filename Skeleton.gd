@@ -43,7 +43,6 @@ func _process(delta):
 		processDeath = false
 		
 	if screenShake > 0:
-		print(screenShake)
 		process_camera_shake()
 
 
@@ -103,10 +102,8 @@ func process_camera_shake():
 	if screenShake > 0.15:	# lessening by 15% everytime means I'll never really hit 0
 		$Camera.offset = Vector2(rand_range(-screenShake, screenShake), rand_range(-screenShake, screenShake) - 36)
 		screenShake *= screenShakeReduction	# lessen shake by % each frame - basically this is the duration
-		print(screenShake)
 	else:
 		# set back to normal offset
-		print("done")
 		$Camera.offset = Vector2(0, -36)
 		screenShake = 0
 		screenShakeReduction = 0.85

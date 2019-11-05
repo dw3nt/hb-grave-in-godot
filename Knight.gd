@@ -22,6 +22,7 @@ var shouldIdle = false
 var hitEffectScene = load("res://HitEffect.tscn")
 var hitEffectAmount = 6
 var shouldSpawnHit = false
+var shouldDie = false
 
 onready var state = State.CHASE
 onready var skeleton = get_tree().get_root().find_node("Skeleton", true, false)
@@ -46,6 +47,10 @@ func _process(delta):
 			inst.set_rotation_degrees(i * spacing + rand_range(-30, 30))
 			hitEffectsParnet.add_child(inst)
 		shouldSpawnHit = false
+		
+	if shouldDie:
+		process_death()
+		shouldDie = false
 
 
 func _physics_process(delta):
@@ -107,7 +112,7 @@ func process_hit(attacker, damage, knockback):
 		
 	hp -= damage
 	if hp <= 0:
-		process_death()
+		shouldDie = true
 	else:
 		$EnemyHP.update_hp(hp)
 		emit_signal("knight_hp_changed", hp)
