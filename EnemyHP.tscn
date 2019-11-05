@@ -21,6 +21,7 @@ expand_margin_top = 1.0
 expand_margin_bottom = 1.0
 
 [node name="EnemyHP" type="Node2D"]
+modulate = Color( 1, 1, 1, 0 )
 script = ExtResource( 1 )
 
 [node name="HP" type="ProgressBar" parent="."]
