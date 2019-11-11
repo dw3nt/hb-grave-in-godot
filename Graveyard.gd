@@ -22,6 +22,7 @@ func _process(delta):
 	var enemyCount = $Enemies.get_child_count()
 	
 	if find_node("Skeleton"):
+		pass
 		if (enemyCount < ($Skeleton.kills / 4) && enemyCount <= MAX_ENEMY_COUNT) || enemyCount == 0:
 			var enemy = enemies[randi() % enemies.size()].instance()
 			enemy.connect("enemy_death", $Skeleton, "_on_Enemy_Death")
