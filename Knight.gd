@@ -112,6 +112,8 @@ func process_hit(attacker, damage, knockback):
 		
 	hp -= damage
 	if hp <= 0:
+		state = State.DEATH
+		$AttackDetect.monitoring = false
 		shouldDie = true
 	else:
 		$EnemyHP.update_hp(hp)

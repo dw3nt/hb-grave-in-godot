@@ -1,7 +1,8 @@
 extends KinematicBody2D
 
-signal knight_hp_changed
+signal boss_hp_changed
 signal enemy_death
+signal boss_death
 
 enum State { IDLE, CHASE, ATTACK, KNOCKBACK, DEATH }
 
@@ -12,6 +13,7 @@ var motion = Vector2()
 var isDodgeable = false
 var isFlipped = false
 var inAttackRange = false
+var canAttack = true
 var inBackupRange = false
 var maxHp = 100
 var hp = maxHp
@@ -45,6 +47,7 @@ func _process(delta):
 		for i in range(hitEffectAmount):
 			var inst = hitEffectScene.instance()
 			inst.global_position = global_position
+			inst.global_position.y += 20
 			inst.set_rotation_degrees(i * spacing + rand_range(-30, 30))
 			hitEffectsParnet.add_child(inst)
 		shouldSpawnHit = false
@@ -64,15 +67,17 @@ func _physics_process(delta):
 			reset_hitboxes()
 			process_idle()
 		State.CHASE:
-			reset_hitboxes()
-			set_face_direction(skeleton)
-			process_chase(skeleton)
+			if $Anim.current_animation != "attack":
+				reset_hitboxes()
+				if !inBackupRange:
+					set_face_direction(skeleton)
+				process_chase(skeleton)
 		State.ATTACK:
-			process_attack()
-		State.KNOCKBACK:
-			reset_hitboxes()
-			process_knockback()
-			
+			if canAttack:
+				process_attack()
+			else:
+				state = State.CHASE
+		
 	move_and_slide(motion)
 	
 
@@ -85,11 +90,17 @@ func process_idle():
 	
 func process_chase(chase):
 	if !isFlipped:
-		motion.x = min(motion.x + ACCELERATION, MAX_MOVE_SPEED)
+		if inBackupRange:
+			motion.x = max(motion.x - ACCELERATION, -MAX_MOVE_SPEED)
+		else:
+			motion.x = min(motion.x + ACCELERATION, MAX_MOVE_SPEED)
 	else:
-		motion.x = max(motion.x - ACCELERATION, -MAX_MOVE_SPEED)
-		
-	if $Anim.current_animation != "walk":
+		if inBackupRange:
+			motion.x = min(motion.x + ACCELERATION, MAX_MOVE_SPEED)
+		else:
+			motion.x = max(motion.x - ACCELERATION, -MAX_MOVE_SPEED)
+	
+	if $Anim.current_animation != "walk" && $Anim.current_animation != "attack":
 		$Anim.play("walk")
 	
 	
@@ -100,23 +111,26 @@ func process_attack():
 	motion.x = lerp(motion.x, 0, 0.25)
 	
 	
+func trigger_attack_screenshake():
+	skeleton.setup_camera_shake(10, 0.15)
+	
+	
 func process_hit(attacker, damage, knockback):
-	state = State.KNOCKBACK
-	if attacker.position.x > self.position.x:
-		knockbackSpeed = -knockback
-	else:
-		knockbackSpeed = knockback
-	set_face_direction(attacker)
+	if state != State.ATTACK:
+		set_face_direction(attacker)
 	
 	shouldSpawnHit = true
 	skeleton.setup_camera_shake(2, 0.25)
 		
 	hp -= damage
 	if hp <= 0:
+		state = State.DEATH
+		$BackupDetect.monitoring = false
+		$AttackDetect.monitoring = false
 		shouldDie = true
 	else:
 		$EnemyHP.update_hp(hp)
-		emit_signal("knight_hp_changed", hp)
+		emit_signal("boss_hp_changed", hp)
 		
 		
 func process_death():
@@ -124,10 +138,6 @@ func process_death():
 	motion = Vector2(0, 0)
 	$Anim.play("death")
 	$EnemyHP.visible = false
-		
-
-func process_knockback():
-	motion.x = lerp(motion.x, 0, 0.025)
 	
 	
 func spawn_experience():
@@ -164,6 +174,16 @@ func _on_AttackDetect_body_exited(body):
 	if body.get_name() == "Skeleton":
 		inAttackRange = false
 		
+		
+func _on_BackupDetect_body_entered(body):
+	if body.get_name() == "Skeleton":
+		inBackupRange = true
+
+
+func _on_BackupDetect_body_exited(body):
+	if body.get_name() == "Skeleton":
+		inBackupRange = false
+
 
 func _on_Player_Death():
 	shouldIdle = true
@@ -185,6 +205,9 @@ func _on_Anim_animation_finished(anim_name):
 					state = State.CHASE
 			else:
 				skeleton = null
+				
+			canAttack = false;
+			$AttackTimer.start();
 		"knockback":
 			if shouldDie:
 				state = State.DEATH
@@ -198,7 +221,16 @@ func _on_Anim_animation_finished(anim_name):
 			spawn_experience()
 		"death-fade":
 			emit_signal("enemy_death")
+			emit_signal("boss_death")
 			queue_free()
 				
 	if shouldIdle:
 		state = State.IDLE
+
+
+func _on_AttackTimer_timeout():
+	canAttack = true;
+	if inAttackRange:
+		state = State.ATTACK
+	else:
+		state = State.CHASE

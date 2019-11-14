@@ -9,8 +9,10 @@ const ENEMY_BUFFER_HIGH = 16	# this is an estimate
 
 var screenShake = 0
 var deathCam
+var isBoss = false
 
 onready var enemies = [ load("res://Knight.tscn"), load("res://Crow.tscn"), load("res://Crow.tscn") ]
+onready var enemiesWithBoss = [ load("res://Knight.tscn"), load("res://Crow.tscn"), load("res://Boss.tscn"), load("res://Boss.tscn") ]
 onready var wallLeftX = $Environment/WallLeft.global_position.x + 20
 onready var wallRightX = $Environment/WallRight.global_position.x - 20
 
@@ -22,13 +24,23 @@ func _process(delta):
 	var enemyCount = $Enemies.get_child_count()
 	
 	if find_node("Skeleton"):
-		pass
 		if (enemyCount < ($Skeleton.kills / 4) && enemyCount <= MAX_ENEMY_COUNT) || enemyCount == 0:
-			var enemy = enemies[randi() % enemies.size()].instance()
+			var enemy = null
+			if $Skeleton.kills > 5 && !isBoss:
+				enemy = enemiesWithBoss[randi() % enemies.size()].instance()
+			else:
+				enemy = enemies[randi() % enemies.size()].instance()
+				
+			enemy = enemiesWithBoss[randi() % enemies.size()].instance()
 			enemy.connect("enemy_death", $Skeleton, "_on_Enemy_Death")
 			$Skeleton.connect("player_death", enemy, "_on_Player_Death")
 			
 			enemy.global_position.y = $Skeleton.global_position.y
+			if enemy.name == "Boss":
+				enemy.global_position.y -= 16
+				isBoss = true
+				enemy.connect("boss_death", self, "_on_Boss_Death")
+				
 			enemy.global_position.x = enemy_x_pos()
 			$Enemies.add_child(enemy)
 	else:
@@ -92,3 +104,7 @@ func _on_Skeleton_player_death():	# switch cameras so I can delete player node
 	deathCam.current = true
 	screenShake = 17
 	$Skeleton.queue_free()
+	
+	
+func _on_Boss_Death():
+	isBoss = false
