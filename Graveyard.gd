@@ -26,7 +26,7 @@ func _process(delta):
 	if find_node("Skeleton"):
 		if (enemyCount < ($Skeleton.kills / 4) && enemyCount <= MAX_ENEMY_COUNT) || enemyCount == 0:
 			var enemy = null
-			if $Skeleton.kills > 5 && !isBoss:
+			if $Skeleton.kills > 10 && !isBoss:
 				enemy = enemiesWithBoss[randi() % enemies.size()].instance()
 			else:
 				enemy = enemies[randi() % enemies.size()].instance()
