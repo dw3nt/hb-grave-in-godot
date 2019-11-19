@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Graveyard.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/environment/s_clouds.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Tombstone.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Skeleton.tscn" type="PackedScene" id=8]
 [ext_resource path="res://UI.tscn" type="PackedScene" id=9]
+[ext_resource path="res://assets/sounds/a_music.ogg" type="AudioStream" id=10]
 
 [node name="Graveyard" type="Node"]
 script = ExtResource( 1 )
@@ -118,6 +119,11 @@ position = Vector2( 1168, 140 )
 position = Vector2( 96, 136 )
 
 [node name="UI" parent="." instance=ExtResource( 9 )]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+volume_db = -10.0
+autoplay = true
 
 [connection signal="hp_changed" from="Skeleton" to="UI" method="_on_Skeleton_hp_changed"]
 [connection signal="kills_changed" from="Skeleton" to="UI" method="_on_Skeleton_kills_changed"]
