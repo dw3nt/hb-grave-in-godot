@@ -413,6 +413,7 @@ position = Vector2( 139.717, 33.8938 )
 rotation = -0.0692103
 collision_layer = 16
 collision_mask = 1
+knockback = 700
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
 position = Vector2( -0.207458, 2.99282 )

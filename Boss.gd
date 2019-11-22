@@ -238,8 +238,9 @@ func _on_Anim_animation_finished(anim_name):
 
 
 func _on_AttackTimer_timeout():
-	canAttack = true;
-	if inAttackRange:
-		state = State.ATTACK
-	else:
-		state = State.CHASE
+	if !shouldDie && state != State.DEATH:
+		canAttack = true;
+		if inAttackRange:
+			state = State.ATTACK
+		else:
+			state = State.CHASE
