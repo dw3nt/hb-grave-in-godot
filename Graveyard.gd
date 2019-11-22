@@ -31,7 +31,6 @@ func _process(delta):
 			else:
 				enemy = enemies[randi() % enemies.size()].instance()
 				
-			enemy = enemiesWithBoss[randi() % enemies.size()].instance()
 			enemy.connect("enemy_death", $Skeleton, "_on_Enemy_Death")
 			$Skeleton.connect("player_death", enemy, "_on_Player_Death")
 			

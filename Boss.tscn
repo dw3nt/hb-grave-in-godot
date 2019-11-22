@@ -1,12 +1,14 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Boss.gd" type="Script" id=1]
-[ext_resource path="res://assets/sprites/boss/s_boss_idle.png" type="Texture" id=2]
-[ext_resource path="res://assets/sprites/boss/s_boss_attack_strip15.png" type="Texture" id=3]
-[ext_resource path="res://assets/sprites/boss/s_boss_die_strip5.png" type="Texture" id=4]
+[ext_resource path="res://assets/sprites/boss/s_boss_attack_strip15.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/boss/s_boss_die_strip5.png" type="Texture" id=3]
+[ext_resource path="res://assets/sprites/boss/s_boss_idle.png" type="Texture" id=4]
 [ext_resource path="res://assets/sprites/boss/s_boss_walk_strip6.png" type="Texture" id=5]
 [ext_resource path="res://Hitbox.tscn" type="PackedScene" id=6]
 [ext_resource path="res://EnemyHP.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/sounds/a_big_hit.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/sounds/a_medium_hit.wav" type="AudioStream" id=9]
 
 [sub_resource type="Animation" id=1]
 resource_name = "attack"
@@ -33,7 +35,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 3 ) ]
+"values": [ ExtResource( 2 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Sprite:hframes")
@@ -83,6 +85,34 @@ tracks/5/keys = {
 "values": [ {
 "args": [  ],
 "method": "trigger_attack_screenshake"
+} ]
+}
+tracks/6/type = "method"
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0.7 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ NodePath("HitAudio") ],
+"method": "play_sound"
+} ]
+}
+tracks/7/type = "method"
+tracks/7/path = NodePath(".")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0.7 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ NodePath("BigHitAudio") ],
+"method": "play_sound"
 } ]
 }
 
@@ -135,7 +165,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 4 ) ]
+"values": [ ExtResource( 3 ) ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Sprite:hframes")
@@ -223,7 +253,7 @@ tracks/5/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 4 ) ]
+"values": [ ExtResource( 3 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -263,7 +293,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 2 ) ]
+"values": [ ExtResource( 4 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("Sprite:hframes")
@@ -346,6 +376,9 @@ script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
+offset = Vector2( 34, -45 )
+hframes = 15
+frame = 7
 
 [node name="Anim" type="AnimationPlayer" parent="."]
 autoplay = "idle"
@@ -392,6 +425,12 @@ hpHeight = 6
 hpWidth = 40
 
 [node name="AttackTimer" type="Timer" parent="."]
+
+[node name="BigHitAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="HitAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
 
 [connection signal="animation_finished" from="Anim" to="." method="_on_Anim_animation_finished"]
 [connection signal="animation_started" from="Anim" to="." method="_on_Anim_animation_started"]

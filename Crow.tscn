@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Crow.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/crow/s_crow_strip5.png" type="Texture" id=2]
 [ext_resource path="res://Hitbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/sounds/a_medium_hit.wav" type="AudioStream" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 12.1049 )
@@ -53,5 +54,8 @@ collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource( 3 )
+
+[node name="HitAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]

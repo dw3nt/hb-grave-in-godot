@@ -70,6 +70,7 @@ func process_hit(attacker, damage, knockback):
 	skeleton.setup_camera_shake(2, 0.25)
 	
 	hp -= damage
+	attacker.play_hit_audio()
 	if hp <= 0:
 		shouldDie = true
 		
@@ -80,6 +81,14 @@ func process_death():
 		
 	emit_signal("enemy_death")
 	queue_free()
+	
+	
+func play_hit_audio():
+	play_sound(NodePath("HitAudio"))
+	
+	
+func play_sound(nodePath):
+	get_node(nodePath).play()
 	
 	
 func spawn_feathers():

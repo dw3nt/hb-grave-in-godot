@@ -93,6 +93,7 @@ func process_hit(attacker, damage, knockback):
 		setup_camera_shake(5, 0.15)
 		hp -= damage
 		emit_signal("hp_changed", hp, maxHp)
+		attacker.play_hit_audio()
 		if hp <= 0:
 			processDeath = true
 			state = State.DEATH
@@ -194,6 +195,14 @@ func set_camera_facing():
 func setup_camera_shake(intensity, reduction):
 	screenShake = intensity
 	screenShakeReduction = 1 - reduction
+	
+	
+func play_hit_audio():
+	play_sound(NodePath("HitAudio"))
+	
+	
+func play_sound(nodePath):
+	get_node(nodePath).play()
 		
 		
 func _on_Enemy_Death():
@@ -230,6 +239,7 @@ func _on_Anim_animation_finished(anim_name):
 
 func _on_ExpCollect_area_entered(area):
 	if area.is_in_group("exp_orb") && state != State.DEATH:
+		$ExpAudio.play()
 		experience += area.amount
 		area.queue_free()
 		if experience >= maxExperience:

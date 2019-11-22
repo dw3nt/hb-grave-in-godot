@@ -109,6 +109,7 @@ func process_hit(attacker, damage, knockback):
 	
 	shouldSpawnHit = true
 	skeleton.setup_camera_shake(2, 0.25)
+	attacker.play_hit_audio()
 		
 	hp -= damage
 	if hp <= 0:
@@ -151,6 +152,14 @@ func set_face_direction(faceTowards):
 		isFlipped = true
 		scale.x = -1
 		$EnemyHP.set_rotation_degrees(180)
+		
+		
+func play_hit_audio():
+	play_sound(NodePath("HitAudio"))
+	
+	
+func play_sound(nodePath):
+	get_node(nodePath).play()
 		
 		
 func reset_hitboxes():
