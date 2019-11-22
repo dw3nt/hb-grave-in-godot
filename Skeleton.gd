@@ -118,6 +118,8 @@ func process_death():
 		bone.boneFrame = i
 		boneParent.add_child(bone)
 		
+	save_score()
+		
 	emit_signal("player_death")
 		
 	
@@ -203,6 +205,33 @@ func play_hit_audio():
 	
 func play_sound(nodePath):
 	get_node(nodePath).play()
+	
+	
+func save_score():
+	# fetch high score from file if exists
+	var highscore = 0
+	var data = { kills = kills }
+	var file = File.new()
+	if file.file_exists("user://scores.dat"):
+		var result = file.open("user://scores.dat", File.READ)
+		if result != 0:
+			file.close()
+			print("Error opening file: " + str(result))
+			return
+			
+		var fileData = parse_json(file.get_line())
+		highscore = fileData.highscore
+		file.close()
+	
+	# set highscore if beat record
+	if kills > highscore:
+		highscore = kills
+	data.highscore = highscore
+	
+	# save last kills and highscore
+	file.open("user://scores.dat", File.WRITE)
+	file.store_line(to_json(data))
+	file.close()
 		
 		
 func _on_Enemy_Death():
