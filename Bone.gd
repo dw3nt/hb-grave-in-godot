@@ -41,6 +41,6 @@ func add_game_over_timer():
 	
 
 func _timer_timeout():
-	print("bone timeout")	# transition to game over screen after saving score(s)
+	get_tree().change_scene("res://GameOver.tscn")
 	
 	
